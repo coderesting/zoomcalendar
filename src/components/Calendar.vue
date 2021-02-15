@@ -1,7 +1,10 @@
 <template>
 	<div id="calendar">
 		<Settings :week="week" @weekImport="importWeek" />
-		<Week :week="week" @editSubject="editSubject" @addSubject="addSubject" />
+		<Week :week="week"
+			@editSubject="editSubject"
+			@addSubject="addSubject" 
+			@reorderSubject="reorderSubject"/>
 	</div>
 </template>
 
@@ -89,6 +92,7 @@ export default {
 			});
 			this.saveWeek(this.week);
 		},
+
 		editSubject: function(id, name, link, password) {
 			this.week.forEach((day) => {
 				day.subjects.forEach((subject, subjectIdx) => {
@@ -103,6 +107,50 @@ export default {
 					}
 				});
 			});
+			this.saveWeek(this.week);
+		},
+
+		reorderSubject: function(id, direction) {
+			for (let j = 0; j < this.week.length; j++) {
+				let day = this.week[j];
+
+				// Swaps only possible if there is more than one subject
+				if (day.subjects.length > 1) {
+					let swapped = false;
+
+					for (let i = 0; i < day.subjects.length; i++) {
+						// Search for current subject
+						if (day.subjects[i].id == id) {
+							if (direction == 'up' && i > 0) {
+								// Swap upper and current element
+								let temp = day.subjects[i-1];
+
+								day.subjects[i-1] = day.subjects[i];
+								day.subjects[i] = temp;
+
+								swapped = true;
+								break;
+							} else if (direction == 'down' && i < day.subjects.length - 1) {
+								// Swap lower and current element
+								let temp = day.subjects[i+1];
+
+								day.subjects[i+1] = day.subjects[i];
+								day.subjects[i] = temp;
+								
+								swapped = true;
+								break;
+							}
+						}
+					}	
+
+					if (swapped) {
+						// Swap of elements in Array are not registered by Javascript. Direct data update:
+						Vue.set(this.week, j, day);
+						break;
+					}
+				}
+			}
+
 			this.saveWeek(this.week);
 		},
 	},
