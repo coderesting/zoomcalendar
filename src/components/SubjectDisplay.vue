@@ -13,7 +13,7 @@
 				:disabled="password === ''"
 				@click="copy"
 			>
-				copy password
+				Copy password
 			</button>
 			<a :href="link" target="_blank"><button>Join</button></a>
 		</div>
