@@ -1,44 +1,59 @@
 <template>
 	<div class="edit">
 		<div class="data">
-			<span>Name:</span
-			><input
+			<span>Name:</span>
+			<input
 				type="text"
 				placeholder="DM 2"
 				v-model="newName"
 				:class="{ error: !validName }"
 			/>
-			<span>Zoom-Link:</span
-			><input
+
+			<span>Zoom-Link:</span>
+			<input
 				placeholder="https://nordakademie-de.zoom.us/j/1234"
 				:class="{ error: !validUrl }"
 				type="text"
 				v-model="newLink"
 			/>
-			<span>Zoom-Password:</span
-			><input placeholder="1234" v-model="newPassword" type="text" />
+			
+			<span>Zoom-Password:</span>
+			<input 
+				placeholder="1234"
+				v-model="newPassword"
+				type="text"
+			/>
 		</div>
 		<div class="actions">
-			<button @click="save('', '', '')" class="bad">
-				Delete
+			<button @click="save('', '', '')" class="iconButton">
+				<DeleteIcon :size="20" />
 			</button>
 			<button
 				:disabled="!validInputs"
 				@click="save(newName, newLink, newPassword)"
+				class="iconButton"
 			>
-				Save
+				<SaveIcon :size="20" />
 			</button>
 		</div>
 	</div>
 </template>
 
 <script>
+import SaveIcon from "vue-material-design-icons/ContentSave";
+import DeleteIcon from "vue-material-design-icons/Delete";
+
 export default {
 	name: "SubjectEdit",
 	props: {
 		name: String,
 		link: String,
 		password: String,
+	},
+
+	components: {
+		SaveIcon,
+		DeleteIcon
 	},
 
 	data: function() {
@@ -106,5 +121,14 @@ export default {
 
 ::-ms-input-placeholder {
 	color: rgba(241, 241, 241, 0.349);
+}
+
+.iconButton {
+	padding: 3px 7px;
+}
+
+.iconButton > * {
+	display: flex;
+	align-items: center;
 }
 </style>
