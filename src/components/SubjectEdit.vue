@@ -20,13 +20,13 @@
 		</div>
 		<div class="actions">
 			<button @click="save('', '', '')" class="bad">
-				delete
+				Delete
 			</button>
 			<button
 				:disabled="!validInputs"
 				@click="save(newName, newLink, newPassword)"
 			>
-				save
+				Save
 			</button>
 		</div>
 	</div>
