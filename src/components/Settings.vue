@@ -79,7 +79,7 @@ export default {
 			element.setAttribute(
 				"href",
 				"data:text/json;charset=utf-8," +
-					encodeURIComponent(JSON.stringify(this.week))
+					encodeURIComponent(JSON.stringify(this.week, null, 2))
 			);
 			element.setAttribute("download", this.exportName);
 			element.style.display = "none";
