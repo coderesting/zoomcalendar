@@ -46,6 +46,11 @@ export default {
 		};
 	},
 	components: { SettingsIcon, CloseIcon },
+	watch: {
+		open: function(newVal) {
+			if (newVal == false) this.status = "ok";
+		},
+	},
 	methods: {
 		importFile: function() {
 			const files = this.$refs.fileInput.files;
