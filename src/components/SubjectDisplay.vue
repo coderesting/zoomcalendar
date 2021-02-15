@@ -2,10 +2,11 @@
 	<div class="display">
 		<h2>{{ name }}</h2>
 		<div class="actions">
-			<button @click="$emit('edit')" class="editButton">
+			<button class="customButton" @click="$emit('edit')">
 				<EditIcon :size="20" />
 			</button>
-			<button
+
+			<button class="customButton"
 				:class="{
 					good: copyState == 'success',
 					bad: copyState == 'failure',
@@ -13,15 +14,22 @@
 				:disabled="password === ''"
 				@click="copy"
 			>
-				Copy password
+				<PasswordIcon :size="20" />
 			</button>
-			<a :href="link" target="_blank"><button>Join</button></a>
+
+			<a :href="link" target="_blank">
+				<button class="customButton">
+					<JoinIcon :size="20" />
+				</button>
+			</a>
 		</div>
 	</div>
 </template>
 
 <script>
 import EditIcon from "vue-material-design-icons/Pencil";
+import PasswordIcon from "vue-material-design-icons/Lock";
+import JoinIcon from "vue-material-design-icons/PlayCircle";
 
 export default {
 	name: "SubjectDisplay",
@@ -32,6 +40,8 @@ export default {
 	},
 	components: {
 		EditIcon,
+		PasswordIcon,
+		JoinIcon
 	},
 
 	data: () => {
@@ -101,11 +111,11 @@ export default {
 	align-items: stretch;
 }
 
-.editButton {
-	padding: 0px 7px;
+.customButton {
+	padding: 3px 7px;
 }
 
-.editButton > * {
+.customButton > * {
 	display: flex;
 	align-items: center;
 }
