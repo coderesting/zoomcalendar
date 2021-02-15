@@ -1,6 +1,6 @@
 # Zoom Calendar
 
-This is a calendar students with online lectures in Zoom. You can quickly copy meeting passwords to the clipboard and join.
+This is a calendar for students with online lectures in Zoom. You can quickly copy meeting passwords to the clipboard and join.
 
 ## Usage
 
