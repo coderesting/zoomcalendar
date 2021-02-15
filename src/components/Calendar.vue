@@ -29,23 +29,23 @@ export default {
 		} else
 			this.week = [
 				{
-					name: "Montag",
+					name: "Monday",
 					subjects: [],
 				},
 				{
-					name: "Dienstag",
+					name: "Tuesday",
 					subjects: [],
 				},
 				{
-					name: "Mittwoch",
+					name: "Wednesday",
 					subjects: [],
 				},
 				{
-					name: "Donnerstag",
+					name: "Thursday",
 					subjects: [],
 				},
 				{
-					name: "Freitag",
+					name: "Friday",
 					subjects: [],
 				},
 			];
