@@ -56,7 +56,7 @@ export default {
 .subject {
 	box-sizing: border-box;
 	padding: 15px;
-	border-radius: 15px;
+	border-radius: 10px;
 	background: var(--gradient);
 	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 	place-self: stretch;

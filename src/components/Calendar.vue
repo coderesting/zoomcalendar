@@ -167,12 +167,12 @@ button:disabled {
 	pointer-events: none;
 }
 
-button:hover {
+button:not(.good):not(.bad):hover {
 	background-color: var(--light);
 	color: var(--dark);
 }
 
-button:hover.dark {
+button:not(.good):not(.bad):hover.dark {
 	background-color: var(--dark);
 	color: var(--light);
 }
