@@ -13,7 +13,9 @@
 			:name="name"
 			:link="this.link"
 			:password="this.password"
+			:id="this.id"
 			@save="this.save"
+			@reorder="this.reorder"
 		/>
 	</div>
 </template>
@@ -39,6 +41,9 @@ export default {
 	methods: {
 		setEditMode: function(edit) {
 			this.edit = edit;
+		},
+		reorder: function(direction) {
+			this.$emit("reorderSubject", direction);
 		},
 		save: function(name, link, password) {
 			this.$emit("change", name, link, password);

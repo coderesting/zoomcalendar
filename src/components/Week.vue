@@ -14,10 +14,9 @@
 			:name="subject.name"
 			:link="subject.link"
 			:password="subject.pass"
-			@change="
-				(name, link, password) =>
-					$emit('editSubject', subject.id, name, link, password)
-			"
+			:id="subject.id"
+			@change="(name, link, password) => $emit('editSubject', subject.id, name, link, password)"
+			@reorderSubject="(direction) => $emit('reorderSubject', subject.id, direction)"
 		/>
 		<AddSymbol
 			v-for="(symbol, index) of getAddSymbols()"

@@ -25,6 +25,12 @@
 			/>
 		</div>
 		<div class="actions">
+			<button @click="reorder('down')" class="iconButton">
+				<ArrowDownIcon :size="20" />
+			</button>
+			<button @click="reorder('up')" class="iconButton">
+				<ArrowUpIcon :size="20" />
+			</button>
 			<button @click="save('', '', '')" class="iconButton">
 				<DeleteIcon :size="20" />
 			</button>
@@ -42,18 +48,22 @@
 <script>
 import SaveIcon from "vue-material-design-icons/ContentSave";
 import DeleteIcon from "vue-material-design-icons/Delete";
+import ArrowUpIcon from "vue-material-design-icons/ArrowUpBold";
+import ArrowDownIcon from "vue-material-design-icons/ArrowDownBold";
 
 export default {
 	name: "SubjectEdit",
 	props: {
 		name: String,
 		link: String,
-		password: String,
+		password: String
 	},
 
 	components: {
 		SaveIcon,
-		DeleteIcon
+		DeleteIcon,
+		ArrowUpIcon,
+		ArrowDownIcon
 	},
 
 	data: function() {
@@ -84,9 +94,12 @@ export default {
 		},
 	},
 	methods: {
+		reorder: function(direction) {
+			this.$emit("reorder", direction);
+		},
 		save: function(name, link, password) {
 			this.$emit("save", name, link, password);
-		},
+		}
 	},
 };
 </script>
