@@ -2,8 +2,8 @@
 	<div class="display">
 		<h2>{{ name }}</h2>
 		<div class="actions">
-			<button @click="$emit('edit')" class="pencilButton">
-				<CreateIcon :size="20" />
+			<button @click="$emit('edit')" class="editButton">
+				<EditIcon :size="20" />
 			</button>
 			<button
 				:class="{
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import CreateIcon from "vue-material-design-icons/Pencil";
+import EditIcon from "vue-material-design-icons/Pencil";
 
 export default {
 	name: "SubjectDisplay",
@@ -31,7 +31,7 @@ export default {
 		password: String,
 	},
 	components: {
-		CreateIcon,
+		EditIcon,
 	},
 
 	data: () => {
@@ -101,11 +101,11 @@ export default {
 	align-items: stretch;
 }
 
-.pencilButton {
+.editButton {
 	padding: 0px 7px;
 }
 
-.pencilButton > * {
+.editButton > * {
 	display: flex;
 	align-items: center;
 }
