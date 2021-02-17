@@ -21,20 +21,20 @@
 </template>
 
 <script>
-import SubjectDisplay from "./SubjectDisplay.vue";
-import SubjectEdit from "./SubjectEdit.vue";
+import SubjectDisplay from './SubjectDisplay.vue';
+import SubjectEdit from './SubjectEdit.vue';
 
 export default {
-	name: "Subject",
+	name: 'Subject',
 	props: {
 		name: String,
 		link: String,
 		password: String,
-		id: String,
+		id: String
 	},
 	data: function() {
 		return {
-			edit: this.name === "",
+			edit: this.name === ''
 		};
 	},
 
@@ -43,17 +43,17 @@ export default {
 			this.edit = edit;
 		},
 		reorder: function(direction) {
-			this.$emit("reorderSubject", direction);
+			this.$emit('reorderSubject', direction);
 		},
 		save: function(name, link, password) {
-			this.$emit("change", name, link, password);
+			this.$emit('change', name, link, password);
 			this.edit = false;
-		},
+		}
 	},
 	components: {
 		SubjectDisplay,
-		SubjectEdit,
-	},
+		SubjectEdit
+	}
 };
 </script>
 

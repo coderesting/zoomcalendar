@@ -6,11 +6,11 @@
 
 <script>
 export default {
-	name: "AddSymbol",
+	name: 'AddSymbol',
 	props: {
-		dayIdx: Number,
+		dayIdx: Number
 	},
-	components: {},
+	components: {}
 };
 </script>
 

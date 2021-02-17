@@ -15,8 +15,13 @@
 			:link="subject.link"
 			:password="subject.pass"
 			:id="subject.id"
-			@change="(name, link, password) => $emit('editSubject', subject.id, name, link, password)"
-			@reorderSubject="(direction) => $emit('reorderSubject', subject.id, direction)"
+			@change="
+				(name, link, password) =>
+					$emit('editSubject', subject.id, name, link, password)
+			"
+			@reorderSubject="
+				direction => $emit('reorderSubject', subject.id, direction)
+			"
 		/>
 		<AddSymbol
 			v-for="(symbol, index) of getAddSymbols()"
@@ -29,17 +34,17 @@
 </template>
 
 <script>
-import Subject from "./Subject.vue";
-import AddSymbol from "./AddSymbol.vue";
+import Subject from './Subject.vue';
+import AddSymbol from './AddSymbol.vue';
 
 export default {
-	name: "Week",
+	name: 'Week',
 	props: {
-		week: Array,
+		week: Array
 	},
 	components: {
 		Subject,
-		AddSymbol,
+		AddSymbol
 	},
 	methods: {
 		getWeekDays: function() {
@@ -48,7 +53,7 @@ export default {
 				dayNames.push({
 					name: day.name,
 					column: i + 1,
-					row: 1,
+					row: 1
 				});
 			});
 			return dayNames;
@@ -60,7 +65,7 @@ export default {
 					subjects.push({
 						row: parseInt(subjectIdx) + 2,
 						column: parseInt(dayIdx) + 1,
-						...subject,
+						...subject
 					});
 				});
 			});
@@ -71,15 +76,15 @@ export default {
 			this.week.forEach((day, dayIdx) => {
 				pluses.push({
 					row: day.subjects.length + 2,
-					column: dayIdx + 1,
+					column: dayIdx + 1
 				});
 			});
 			return pluses;
-		},
+		}
 	},
 	data: function() {
 		return {};
-	},
+	}
 };
 </script>
 

@@ -8,14 +8,14 @@ export default function(weekText) {
 	if (!(week instanceof Array)) return null;
 
 	for (let day of week) {
-		if (typeof day.name != "string" || !(day.subjects instanceof Array))
+		if (typeof day.name != 'string' || !(day.subjects instanceof Array))
 			return null;
 
 		for (let subject of day.subjects) {
 			if (
-				typeof subject.name != "string" ||
-				typeof subject.link != "string" ||
-				typeof subject.pass != "string"
+				typeof subject.name != 'string' ||
+				typeof subject.link != 'string' ||
+				typeof subject.pass != 'string'
 			)
 				return null;
 		}

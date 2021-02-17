@@ -16,43 +16,40 @@
 				type="text"
 				v-model="newLink"
 			/>
-			
+
 			<span>Zoom-Password:</span>
-			<input 
-				placeholder="1234"
-				v-model="newPassword"
-				type="text"
-			/>
+			<input placeholder="1234" v-model="newPassword" type="text" />
 		</div>
 		<div class="actions">
-			<button @click="reorder('down')" class="iconButton">
+			<Button @click="reorder('down')">
 				<ArrowDownIcon :size="20" />
-			</button>
-			<button @click="reorder('up')" class="iconButton">
+			</Button>
+			<Button @click="reorder('up')">
 				<ArrowUpIcon :size="20" />
-			</button>
-			<button @click="save('', '', '')" class="iconButton">
+			</Button>
+			<Button @click="save('', '', '')">
 				<DeleteIcon :size="20" />
-			</button>
-			<button
+			</Button>
+			<Button
 				:disabled="!validInputs"
 				@click="save(newName, newLink, newPassword)"
 				class="iconButton"
 			>
 				<SaveIcon :size="20" />
-			</button>
+			</Button>
 		</div>
 	</div>
 </template>
 
 <script>
-import SaveIcon from "vue-material-design-icons/ContentSave";
-import DeleteIcon from "vue-material-design-icons/Delete";
-import ArrowUpIcon from "vue-material-design-icons/ArrowUpBold";
-import ArrowDownIcon from "vue-material-design-icons/ArrowDownBold";
+import SaveIcon from 'vue-material-design-icons/ContentSave';
+import DeleteIcon from 'vue-material-design-icons/Delete';
+import ArrowUpIcon from 'vue-material-design-icons/ArrowUpBold';
+import ArrowDownIcon from 'vue-material-design-icons/ArrowDownBold';
+import Button from './Button';
 
 export default {
-	name: "SubjectEdit",
+	name: 'SubjectEdit',
 	props: {
 		name: String,
 		link: String,
@@ -63,20 +60,21 @@ export default {
 		SaveIcon,
 		DeleteIcon,
 		ArrowUpIcon,
-		ArrowDownIcon
+		ArrowDownIcon,
+		Button
 	},
 
 	data: function() {
 		return {
 			newName: this.name,
 			newLink: this.link,
-			newPassword: this.password,
+			newPassword: this.password
 		};
 	},
 
 	computed: {
 		validName() {
-			return this.newName.trim() != "";
+			return this.newName.trim() != '';
 		},
 
 		validUrl() {
@@ -91,16 +89,16 @@ export default {
 
 		validInputs() {
 			return this.validName && this.validUrl;
-		},
+		}
 	},
 	methods: {
 		reorder: function(direction) {
-			this.$emit("reorder", direction);
+			this.$emit('reorder', direction);
 		},
 		save: function(name, link, password) {
-			this.$emit("save", name, link, password);
+			this.$emit('save', name, link, password);
 		}
-	},
+	}
 };
 </script>
 
@@ -134,14 +132,5 @@ export default {
 
 ::-ms-input-placeholder {
 	color: rgba(241, 241, 241, 0.349);
-}
-
-.iconButton {
-	padding: 3px 7px;
-}
-
-.iconButton > * {
-	display: flex;
-	align-items: center;
 }
 </style>

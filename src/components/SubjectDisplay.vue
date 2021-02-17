@@ -2,85 +2,75 @@
 	<div class="display">
 		<h2>{{ name }}</h2>
 		<div class="actions">
-			<button class="customButton" @click="$emit('edit')">
+			<Button @click="$emit('edit')">
 				<EditIcon :size="20" />
-			</button>
+			</Button>
 
-			<button class="customButton"
-				:class="{
-					good: copyState == 'success',
-					bad: copyState == 'failure',
-				}"
-				:disabled="password === ''"
-				@click="copy"
-			>
-				<PasswordIcon :size="20" />
-			</button>
+			<Button :disabled="password === ''" @click="copyPasswordToClipboard"
+				><CopyIcon :size="20"
+			/></Button>
 
-			<a :href="link" target="_blank">
-				<button class="customButton">
-					<JoinIcon :size="20" />
-				</button>
-			</a>
+			<Button @click="joinMeeting">
+				<LaunchIcon :size="20" />
+			</Button>
 		</div>
 	</div>
 </template>
 
 <script>
-import EditIcon from "vue-material-design-icons/Pencil";
-import PasswordIcon from "vue-material-design-icons/Lock";
-import JoinIcon from "vue-material-design-icons/PlayCircle";
+import EditIcon from 'vue-material-design-icons/Pencil';
+import CopyIcon from 'vue-material-design-icons/ContentCopy';
+import LaunchIcon from 'vue-material-design-icons/Launch';
+import Button from './Button.vue';
 
 export default {
-	name: "SubjectDisplay",
+	name: 'SubjectDisplay',
 	props: {
 		name: String,
 		link: String,
-		password: String,
+		password: String
 	},
 	components: {
 		EditIcon,
-		PasswordIcon,
-		JoinIcon
+		CopyIcon,
+		Button,
+		LaunchIcon
 	},
 
 	data: () => {
 		return {
-			copyState: "",
-			edit: true,
+			copyState: '',
+			edit: true
 		};
 	},
 	methods: {
-		copy: function() {
-			this.copyState = "";
+		copyPasswordToClipboard: async function() {
+			this.copyState = '';
 			if (!navigator.clipboard) {
-				this.error();
-				return;
+				this.$notify({
+					group: 'main',
+					title: 'Failed to copy the password',
+					text: `Here is your pasword: ${this.password}`,
+					duration: 10000,
+					type: 'error'
+				});
+				throw new Error('copy to clipboard failed');
 			}
-
-			navigator.clipboard
-				.writeText(this.password)
-				.then(this.success.bind(this))
-				.catch(this.error.bind(this));
+			await navigator.clipboard.writeText(this.password);
+			this.$notify({
+				group: 'main',
+				title: 'Passord copied to clipboard',
+				duration: 2000,
+				type: 'success'
+			});
 		},
 
-		success: function() {
-			this.copyState = "success";
-			setTimeout(() => {
-				this.copyState = "";
-			}, 1000);
-		},
-
-		error: function() {
-			this.copyState = "failure";
-			alert(
-				`Fehler. Versuche einen modernen Browser. Hier trotzdem das Passwort: ${this.password}`
-			);
-			setTimeout(() => {
-				this.copyState = "";
-			}, 1000);
-		},
-	},
+		joinMeeting: async function() {
+			this.copyPasswordToClipboard().then(() => {
+				window.open(this.link, '_blank');
+			});
+		}
+	}
 };
 </script>
 
@@ -109,14 +99,5 @@ export default {
 	text-decoration: none;
 	display: flex;
 	align-items: stretch;
-}
-
-.customButton {
-	padding: 3px 7px;
-}
-
-.customButton > * {
-	display: flex;
-	align-items: center;
 }
 </style>
