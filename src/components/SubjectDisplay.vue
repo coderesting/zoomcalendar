@@ -73,7 +73,7 @@ export default {
 			if (this.closeTab) {
 				setTimeout(() => {
 					win.close();
-				}, this.closeTabAfter);
+				}, this.closeTabAfter * 1000);
 			}
 		}
 	}

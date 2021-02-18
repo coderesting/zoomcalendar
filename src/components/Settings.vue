@@ -57,7 +57,7 @@ export default {
 	data: function() {
 		return {
 			exportName: 'plan.json',
-			open: true,
+			open: false,
 			closeTabCheckbox: this.closeTab,
 			closeTabAfterInput: this.closeTabAfter
 		};
