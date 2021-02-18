@@ -2,16 +2,25 @@
 	<div class="display">
 		<h2>{{ name }}</h2>
 		<div class="actions">
-			<Button @click="$emit('edit')">
-				<EditIcon :size="20" />
+			<Button title="Edit subject" @click="$emit('edit')">
+				<EditIcon title="Edit subject" :size="20" />
 			</Button>
 
-			<Button :disabled="password === ''" @click="copyPasswordToClipboard"
-				><CopyIcon :size="20"
+			<Button
+				title="Copy password to clipboard"
+				:disabled="password === ''"
+				@click="copyPasswordToClipboard"
+				><CopyIcon title="Copy password to clipboard" :size="20"
 			/></Button>
 
-			<Button @click="joinMeeting">
-				<LaunchIcon :size="20" />
+			<Button
+				title="Launch Zoom meeting (also copies password)"
+				@click="joinMeeting"
+			>
+				<LaunchIcon
+					title="Launch Zoom meeting (also copies password)"
+					:size="20"
+				/>
 			</Button>
 		</div>
 	</div>

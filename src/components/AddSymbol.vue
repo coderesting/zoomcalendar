@@ -1,6 +1,8 @@
 <template>
 	<div class="add">
-		<span class="plusSymbol" @click="$emit('add')">+</span>
+		<span class="plusSymbol" title="Add new subject" @click="$emit('add')"
+			>+</span
+		>
 	</div>
 </template>
 
