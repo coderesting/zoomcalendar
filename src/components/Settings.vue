@@ -29,7 +29,7 @@
 							v-model="closeTabAfterInput"
 							:class="{ error: !validCloseTabAfterInput }"
 							@blur="() => (closeTabAfterInput = closeTabAfter)"
-						/><span>ms</span>
+						/><span>s</span>
 					</div>
 					<ToggleButton
 						:margin="5"
