@@ -15,6 +15,8 @@
 			:link="subject.link"
 			:password="subject.pass"
 			:id="subject.id"
+			:closeTab="closeTab"
+			:closeTabAfter="closeTabAfter"
 			@change="
 				(name, link, password) =>
 					$emit('editSubject', subject.id, name, link, password)
@@ -40,7 +42,9 @@ import AddSymbol from './AddSymbol.vue';
 export default {
 	name: 'Week',
 	props: {
-		week: Array
+		week: Array,
+		closeTab: Boolean,
+		closeTabAfter: Number
 	},
 	components: {
 		Subject,

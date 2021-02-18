@@ -1,11 +1,20 @@
 <template>
 	<div id="calendar">
-		<Settings :week="week" @weekImport="importWeek" />
+		<Settings
+			:week="week"
+			@weekImport="importWeek"
+			:closeTab="closeTab"
+			:closeTabAfter="closeTabAfter"
+			@closeTabAfterChanged="val => (closeTabAfter = val)"
+			@closeTabChanged="val => (closeTab = val)"
+		/>
 		<Week
 			:week="week"
 			@editSubject="editSubject"
 			@addSubject="addSubject"
 			@reorderSubject="reorderSubject"
+			:closeTab="closeTab"
+			:closeTabAfter="closeTabAfter"
 		/>
 		<notifications
 			group="main"
@@ -29,10 +38,26 @@ export default {
 	},
 	data: function() {
 		return {
-			week: null
+			week: null,
+			closeTab: true,
+			closeTabAfter: 2000
 		};
 	},
+	watch: {
+		closeTab: function(newVal) {
+			localStorage.closeTab = newVal;
+		},
+		closeTabAfter: function(newVal) {
+			localStorage.closeTabAfter = newVal;
+		}
+	},
 	created: function() {
+		this.closeTab = false;
+		this.closeTabAfter = 1000;
+		this.closeTab = localStorage.closeTab == 'true' ? true : false;
+		const closeTabAfterStored = parseFloat(localStorage.closeTabAfter);
+		this.closeTabAfter =
+			closeTabAfterStored >= 0 ? closeTabAfterStored : 10000;
 		const savedWeek = this.loadSavedWeek();
 		if (savedWeek) {
 			this.week = savedWeek;
@@ -194,7 +219,8 @@ body {
 	cursor: pointer;
 }
 
-input[type='text'] {
+input[type='text'],
+input[type='number'] {
 	background-color: rgba(0, 0, 0, 0.2);
 	border-radius: 5px;
 	padding: 3px;
@@ -208,12 +234,17 @@ input[type='text'] {
 	transition: 0.2s ease;
 }
 
+input[type='text'].dark,
+input[type='number'].dark {
+	color: var(--dark);
+}
+
 input:focus {
 	outline: none;
 }
 
 input.error {
-	border-color: var(--red);
+	border-color: #f44336;
 }
 
 .vue-notification {

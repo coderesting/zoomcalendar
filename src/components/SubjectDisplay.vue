@@ -28,7 +28,9 @@ export default {
 	props: {
 		name: String,
 		link: String,
-		password: String
+		password: String,
+		closeTab: Boolean,
+		closeTabAfter: Number
 	},
 	components: {
 		EditIcon,
@@ -66,9 +68,13 @@ export default {
 		},
 
 		joinMeeting: async function() {
-			this.copyPasswordToClipboard().then(() => {
-				window.open(this.link, '_blank');
-			});
+			await this.copyPasswordToClipboard();
+			const win = window.open(this.link, '_blank');
+			if (this.closeTab) {
+				setTimeout(() => {
+					win.close();
+				}, this.closeTabAfter);
+			}
 		}
 	}
 };

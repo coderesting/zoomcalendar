@@ -6,6 +6,8 @@
 			:password="this.password"
 			@edit="setEditMode(true)"
 			v-if="!this.edit"
+			:closeTab="closeTab"
+			:closeTabAfter="closeTabAfter"
 		/>
 
 		<SubjectEdit
@@ -30,7 +32,9 @@ export default {
 		name: String,
 		link: String,
 		password: String,
-		id: String
+		id: String,
+		closeTab: Boolean,
+		closeTabAfter: Number
 	},
 	data: function() {
 		return {

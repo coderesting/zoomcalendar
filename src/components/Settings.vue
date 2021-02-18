@@ -19,8 +19,25 @@
 				<div class="actions">
 					<input type="file" ref="fileInput" accept=".json" />
 					<Button class="dark" @click="importFile()">Import</Button>
-					<input type="text" v-model="exportName" />
+					<input type="text" class="dark" v-model="exportName" />
 					<Button class="dark" @click="exportFile()">Export</Button>
+					<div class="autoclose">
+						<span>Close join tab after</span
+						><input
+							class="dark"
+							type="number"
+							v-model="closeTabAfterInput"
+							:class="{ error: !validCloseTabAfterInput }"
+							@blur="() => (closeTabAfterInput = closeTabAfter)"
+						/><span>s</span>
+					</div>
+					<ToggleButton
+						:margin="5"
+						:width="61"
+						:height="28"
+						class="toggle"
+						v-model="closeTabCheckbox"
+					/>
 				</div>
 			</div>
 		</div>
@@ -32,18 +49,34 @@ import SettingsIcon from 'vue-material-design-icons/Cog';
 import CloseIcon from 'vue-material-design-icons/Close';
 import weekDataCheck from '../util/weekDataCheck.js';
 import Button from './Button';
+import { ToggleButton } from 'vue-js-toggle-button';
 
 export default {
 	name: 'Settings',
-	props: { week: Array },
+	props: { week: Array, closeTabAfter: Number, closeTab: Boolean },
 	data: function() {
 		return {
 			exportName: 'plan.json',
-			open: false
+			open: true,
+			closeTabCheckbox: this.closeTab,
+			closeTabAfterInput: this.closeTabAfter
 		};
 	},
-	components: { SettingsIcon, CloseIcon, Button },
-	watch: {},
+	computed: {
+		validCloseTabAfterInput: function() {
+			return parseFloat(this.closeTabAfterInput) >= 0;
+		}
+	},
+	components: { SettingsIcon, CloseIcon, Button, ToggleButton },
+	watch: {
+		closeTabCheckbox: function(newVal) {
+			this.$emit('closeTabChanged', newVal);
+		},
+		closeTabAfterInput: function(newVal) {
+			if (this.validCloseTabAfterInput)
+				this.$emit('closeTabAfterChanged', parseFloat(newVal));
+		}
+	},
 	methods: {
 		importFile: function() {
 			const files = this.$refs.fileInput.files;
@@ -183,16 +216,21 @@ h2 {
 }
 
 #settings > .popup > .actions > input[type='text'] {
-	color: var(--dark);
 	padding: 7px;
 }
 
-#settings > .popup > .status {
-	opacity: 0;
+#settings > .popup > .actions > .autoclose {
+	display: flex;
+	align-items: center;
+	width: 100%;
 }
 
-#settings > .popup > .status.active {
-	transition: 0.3s ease;
-	opacity: 1;
+#settings > .popup > .actions > .autoclose > input {
+	width: 30px;
+	margin: 0px 5px;
+}
+
+#settings > .popup > .actions > .toggle {
+	margin: 10px;
 }
 </style>
