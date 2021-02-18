@@ -56,12 +56,12 @@ export default {
 					duration: 10000,
 					type: 'error'
 				});
-				throw new Error('copy to clipboard failed');
+				throw new Error('Copy to clipboard failed');
 			}
 			await navigator.clipboard.writeText(this.password);
 			this.$notify({
 				group: 'main',
-				title: 'Passord copied to clipboard',
+				title: 'Password copied to clipboard',
 				duration: 2000,
 				type: 'success'
 			});
