@@ -137,6 +137,7 @@ export default {
 h2 {
 	margin: 0px;
 	color: var(--dark);
+	text-align: center;
 }
 
 #settingsIcon {

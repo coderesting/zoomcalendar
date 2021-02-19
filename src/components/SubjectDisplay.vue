@@ -50,40 +50,72 @@ export default {
 
 	data: () => {
 		return {
-			copyState: '',
 			edit: true
 		};
 	},
 	methods: {
 		copyPasswordToClipboard: async function() {
-			this.copyState = '';
-			if (!navigator.clipboard) {
-				this.$notify({
-					group: 'main',
-					title: 'Failed to copy the password',
-					text: `Here is your pasword: ${this.password}`,
-					duration: 10000,
-					type: 'error'
-				});
-				throw new Error('Copy to clipboard failed');
+			let status = 0;
+			if (navigator.clipboard) {
+				try {
+					await navigator.clipboard.writeText(this.password);
+					status = 2;
+				} catch (error) {
+					status = 0;
+				}
 			}
-			await navigator.clipboard.writeText(this.password);
-			this.$notify({
-				group: 'main',
-				title: 'Password copied to clipboard',
-				duration: 2000,
-				type: 'success'
-			});
+
+			if (status == 0) {
+				const inputElm = document.createElement('input');
+				inputElm.setAttribute('type', 'text');
+				inputElm.style.opacity = 0;
+				inputElm.value = this.password;
+				document.body.appendChild(inputElm);
+				inputElm.select();
+				status = 1;
+				if (!document.execCommand('copy')) status = 0;
+				inputElm.remove();
+			}
+
+			switch (status) {
+				case 2:
+					this.$notify({
+						group: 'main',
+						title: 'Password copied to clipboard',
+						duration: 2000,
+						type: 'success'
+					});
+					break;
+				case 1:
+					this.$notify({
+						group: 'main',
+						title:
+							'Not sure if the password was copied to clipboard (just try)',
+						text: `Here is your pasword for backup: ${this.password}`,
+						duration: 20000
+					});
+					break;
+				case 0:
+					this.$notify({
+						group: 'main',
+						title: 'Failed to copy the password to clipboard',
+						text: `Here is your pasword: ${this.password}`,
+						duration: 20000,
+						type: 'error'
+					});
+					break;
+			}
 		},
 
 		joinMeeting: async function() {
-			await this.copyPasswordToClipboard();
-			const win = window.open(this.link, '_blank');
-			if (this.closeTab) {
-				setTimeout(() => {
-					win.close();
-				}, this.closeTabAfter * 1000);
-			}
+			this.copyPasswordToClipboard().finally(() => {
+				const win = window.open(this.link, '_blank');
+				if (this.closeTab) {
+					setTimeout(() => {
+						win.close();
+					}, this.closeTabAfter * 1000);
+				}
+			});
 		}
 	}
 };
@@ -108,11 +140,5 @@ export default {
 .display > .actions {
 	display: flex;
 	justify-content: center;
-}
-
-.display > .actions > a {
-	text-decoration: none;
-	display: flex;
-	align-items: stretch;
 }
 </style>
