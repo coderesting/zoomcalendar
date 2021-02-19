@@ -20,6 +20,7 @@
 			group="main"
 			position="bottom right"
 			:close-on-click="false"
+			:max="5"
 		/>
 	</div>
 </template>
