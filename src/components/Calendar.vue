@@ -52,12 +52,10 @@ export default {
 		}
 	},
 	created: function() {
-		this.closeTab = false;
-		this.closeTabAfter = 1000;
 		this.closeTab = localStorage.closeTab == 'true' ? true : false;
 		const closeTabAfterStored = parseFloat(localStorage.closeTabAfter);
 		this.closeTabAfter =
-			closeTabAfterStored >= 0 ? closeTabAfterStored : 10000;
+			closeTabAfterStored >= 0 ? closeTabAfterStored : 10;
 		const savedWeek = this.loadSavedWeek();
 		if (savedWeek) {
 			this.week = savedWeek;
