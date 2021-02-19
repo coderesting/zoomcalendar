@@ -1,13 +1,13 @@
 <template>
 	<div>
 		<SettingsIcon
-			:size="35"
 			id="settingsIcon"
+			:size="35"
 			class="icon"
 			@click="open = true"
 		/>
 		<div id="settings" :class="{ open: open }">
-			<div class="background" @click="open = false"></div>
+			<div class="background" @click="open = false" />
 			<div class="popup">
 				<CloseIcon
 					id="settingsCloseIcon"
@@ -17,26 +17,26 @@
 				/>
 				<h2>Settings</h2>
 				<div class="actions">
-					<input type="file" ref="fileInput" accept=".json" />
-					<Button class="dark" @click="importFile()">Import</Button>
-					<input type="text" class="dark" v-model="exportName" />
-					<Button class="dark" @click="exportFile()">Export</Button>
+					<input ref="fileInput" type="file" accept=".json" />
+					<Button class="dark" @click="importFile()"> Import </Button>
+					<input v-model="exportName" type="text" class="dark" />
+					<Button class="dark" @click="exportFile()"> Export </Button>
 					<div class="autoclose">
 						<span>Close join tab after</span
 						><input
+							v-model="closeTabAfterInput"
 							class="dark"
 							type="number"
-							v-model="closeTabAfterInput"
 							:class="{ error: !validCloseTabAfterInput }"
 							@blur="() => (closeTabAfterInput = closeTabAfter)"
 						/><span>s</span>
 					</div>
 					<ToggleButton
+						v-model="closeTabCheckbox"
 						:margin="5"
 						:width="61"
 						:height="28"
 						class="toggle"
-						v-model="closeTabCheckbox"
 					/>
 				</div>
 			</div>
@@ -53,32 +53,36 @@ import { ToggleButton } from 'vue-js-toggle-button';
 
 export default {
 	name: 'Settings',
-	props: { week: Array, closeTabAfter: Number, closeTab: Boolean },
-	data: function() {
+	components: { SettingsIcon, CloseIcon, Button, ToggleButton },
+	props: {
+		week: { type: Array, required: true },
+		closeTabAfter: { type: Number, required: true },
+		closeTab: Boolean,
+	},
+	data: function () {
 		return {
 			exportName: 'plan.json',
 			open: false,
 			closeTabCheckbox: this.closeTab,
-			closeTabAfterInput: this.closeTabAfter
+			closeTabAfterInput: this.closeTabAfter,
 		};
 	},
 	computed: {
-		validCloseTabAfterInput: function() {
+		validCloseTabAfterInput: function () {
 			return parseFloat(this.closeTabAfterInput) >= 0;
-		}
+		},
 	},
-	components: { SettingsIcon, CloseIcon, Button, ToggleButton },
 	watch: {
-		closeTabCheckbox: function(newVal) {
+		closeTabCheckbox: function (newVal) {
 			this.$emit('closeTabChanged', newVal);
 		},
-		closeTabAfterInput: function(newVal) {
+		closeTabAfterInput: function (newVal) {
 			if (this.validCloseTabAfterInput)
 				this.$emit('closeTabAfterChanged', parseFloat(newVal));
-		}
+		},
 	},
 	methods: {
-		importFile: function() {
+		importFile: function () {
 			const files = this.$refs.fileInput.files;
 			if (files.length == 0) {
 				this.showNotification('No file selected', 'error');
@@ -86,7 +90,7 @@ export default {
 			}
 
 			const reader = new FileReader();
-			reader.addEventListener('load', event => {
+			reader.addEventListener('load', (event) => {
 				const correctData = weekDataCheck(event.target.result);
 
 				if (correctData != null) {
@@ -101,7 +105,7 @@ export default {
 			reader.readAsText(this.$refs.fileInput.files[0]);
 		},
 
-		exportFile: function() {
+		exportFile: function () {
 			if (this.exportName.trim() == '') {
 				this.showNotification('No filename specified', 'error');
 				return;
@@ -121,15 +125,15 @@ export default {
 			this.showNotification('Exported ' + this.exportName, 'success');
 		},
 
-		showNotification: function(title, type) {
+		showNotification: function (title, type) {
 			this.$notify({
 				group: 'main',
 				title: title,
 				duration: 5000,
-				type: type
+				type: type,
 			});
-		}
-	}
+		},
+	},
 };
 </script>
 

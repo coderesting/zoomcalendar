@@ -10,8 +10,9 @@
 				title="Copy password to clipboard"
 				:disabled="password === ''"
 				@click="copyPasswordToClipboard"
-				><CopyIcon title="Copy password to clipboard" :size="20"
-			/></Button>
+			>
+				<CopyIcon title="Copy password to clipboard" :size="20" />
+			</Button>
 
 			<Button
 				title="Launch Zoom meeting (also copies password)"
@@ -34,27 +35,27 @@ import Button from './Button.vue';
 
 export default {
 	name: 'SubjectDisplay',
-	props: {
-		name: String,
-		link: String,
-		password: String,
-		closeTab: Boolean,
-		closeTabAfter: Number
-	},
 	components: {
 		EditIcon,
 		CopyIcon,
 		Button,
-		LaunchIcon
+		LaunchIcon,
+	},
+	props: {
+		name: { type: String, required: true },
+		link: { type: String, required: true },
+		password: { type: String, required: true },
+		closeTab: { type: Boolean, required: true },
+		closeTabAfter: { type: Number, required: true },
 	},
 
 	data: () => {
 		return {
-			edit: true
+			edit: true,
 		};
 	},
 	methods: {
-		copyPasswordToClipboard: async function() {
+		copyPasswordToClipboard: async function () {
 			let status = 0;
 			if (navigator.clipboard) {
 				try {
@@ -83,7 +84,7 @@ export default {
 						group: 'main',
 						title: 'Password copied to clipboard',
 						duration: 2000,
-						type: 'success'
+						type: 'success',
 					});
 					break;
 				case 1:
@@ -92,7 +93,7 @@ export default {
 						title:
 							'Not sure if the password was copied to clipboard (just try)',
 						text: `Here is your pasword for backup: ${this.password}`,
-						duration: 20000
+						duration: 20000,
 					});
 					break;
 				case 0:
@@ -101,13 +102,13 @@ export default {
 						title: 'Failed to copy the password to clipboard',
 						text: `Here is your pasword: ${this.password}`,
 						duration: 20000,
-						type: 'error'
+						type: 'error',
 					});
 					break;
 			}
 		},
 
-		joinMeeting: async function() {
+		joinMeeting: async function () {
 			this.copyPasswordToClipboard().finally(() => {
 				const win = window.open(this.link, '_blank');
 				if (this.closeTab) {
@@ -116,12 +117,12 @@ export default {
 					}, this.closeTabAfter * 1000);
 				}
 			});
-		}
-	}
+		},
+	},
 };
 </script>
 
-<style>
+<style scoped>
 .display {
 	height: 100%;
 	display: flex;

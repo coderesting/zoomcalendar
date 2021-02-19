@@ -11,5 +11,5 @@ Vue.$cookies.config('1y');
 Vue.config.productionTip = false;
 
 new Vue({
-	render: h => h(Calendar)
+	render: (h) => h(Calendar),
 }).$mount('#calendar');

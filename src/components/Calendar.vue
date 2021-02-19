@@ -2,24 +2,24 @@
 	<div id="calendar">
 		<Settings
 			:week="week"
+			:close-tab="closeTab"
+			:close-tab-after="closeTabAfter"
 			@weekImport="importWeek"
-			:closeTab="closeTab"
-			:closeTabAfter="closeTabAfter"
-			@closeTabAfterChanged="val => (closeTabAfter = val)"
-			@closeTabChanged="val => (closeTab = val)"
+			@closeTabAfterChanged="(val) => (closeTabAfter = val)"
+			@closeTabChanged="(val) => (closeTab = val)"
 		/>
 		<Week
 			:week="week"
+			:close-tab="closeTab"
+			:close-tab-after="closeTabAfter"
 			@editSubject="editSubject"
 			@addSubject="addSubject"
 			@reorderSubject="reorderSubject"
-			:closeTab="closeTab"
-			:closeTabAfter="closeTabAfter"
 		/>
 		<notifications
 			group="main"
 			position="bottom right"
-			:closeOnClick="false"
+			:close-on-click="false"
 		/>
 	</div>
 </template>
@@ -34,24 +34,24 @@ export default {
 	name: 'Calendar',
 	components: {
 		Week,
-		Settings
+		Settings,
 	},
-	data: function() {
+	data: function () {
 		return {
 			week: null,
 			closeTab: true,
-			closeTabAfter: 2000
+			closeTabAfter: 2000,
 		};
 	},
 	watch: {
-		closeTab: function(newVal) {
+		closeTab: function (newVal) {
 			localStorage.closeTab = newVal;
 		},
-		closeTabAfter: function(newVal) {
+		closeTabAfter: function (newVal) {
 			localStorage.closeTabAfter = newVal;
-		}
+		},
 	},
-	created: function() {
+	created: function () {
 		this.closeTab = localStorage.closeTab == 'true' ? true : false;
 		const closeTabAfterStored = parseFloat(localStorage.closeTabAfter);
 		this.closeTabAfter =
@@ -63,33 +63,33 @@ export default {
 			this.week = [
 				{
 					name: 'Monday',
-					subjects: []
+					subjects: [],
 				},
 				{
 					name: 'Tuesday',
-					subjects: []
+					subjects: [],
 				},
 				{
 					name: 'Wednesday',
-					subjects: []
+					subjects: [],
 				},
 				{
 					name: 'Thursday',
-					subjects: []
+					subjects: [],
 				},
 				{
 					name: 'Friday',
-					subjects: []
-				}
+					subjects: [],
+				},
 			];
 	},
 
 	methods: {
-		loadSavedWeek: function() {
+		loadSavedWeek: function () {
 			let correctData = weekDataCheck(this.$cookies.get('week'));
 			if (correctData) {
-				correctData.forEach(day => {
-					day.subjects.forEach(subject => {
+				correctData.forEach((day) => {
+					day.subjects.forEach((subject) => {
 						if (!subject.id)
 							subject.id = Math.random()
 								.toString(36)
@@ -101,30 +101,28 @@ export default {
 			return null;
 		},
 
-		saveWeek: function(week) {
+		saveWeek: function (week) {
 			this.$cookies.set('week', JSON.stringify(week));
 		},
 
-		importWeek: function(week) {
+		importWeek: function (week) {
 			this.week = week;
 			console.log(week);
 			this.saveWeek(this.week);
 		},
 
-		addSubject: function(dayIdx) {
+		addSubject: function (dayIdx) {
 			this.week[dayIdx].subjects.push({
 				name: '',
 				link: '',
 				pass: '',
-				id: Math.random()
-					.toString(36)
-					.substr(2, 9)
+				id: Math.random().toString(36).substr(2, 9),
 			});
 			this.saveWeek(this.week);
 		},
 
-		editSubject: function(id, name, link, password) {
-			this.week.forEach(day => {
+		editSubject: function (id, name, link, password) {
+			this.week.forEach((day) => {
 				day.subjects.forEach((subject, subjectIdx) => {
 					if (subject.id == id) {
 						if (name === '') {
@@ -140,7 +138,7 @@ export default {
 			this.saveWeek(this.week);
 		},
 
-		reorderSubject: function(id, direction) {
+		reorderSubject: function (id, direction) {
 			for (let j = 0; j < this.week.length; j++) {
 				let day = this.week[j];
 
@@ -185,11 +183,12 @@ export default {
 			}
 
 			this.saveWeek(this.week);
-		}
-	}
+		},
+	},
 };
 </script>
 
+<!-- eslint-disable-next-line -->
 <style>
 html {
 	height: 100%;

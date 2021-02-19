@@ -1,23 +1,23 @@
 <template>
 	<div class="subject">
 		<SubjectDisplay
-			:name="this.name"
-			:link="this.link"
-			:password="this.password"
+			v-if="!edit"
+			:name="name"
+			:link="link"
+			:password="password"
+			:close-tab="closeTab"
+			:close-tab-after="closeTabAfter"
 			@edit="setEditMode(true)"
-			v-if="!this.edit"
-			:closeTab="closeTab"
-			:closeTabAfter="closeTabAfter"
 		/>
 
 		<SubjectEdit
-			v-if="this.edit"
+			v-if="edit"
+			:id="id"
 			:name="name"
-			:link="this.link"
-			:password="this.password"
-			:id="this.id"
-			@save="this.save"
-			@reorder="this.reorder"
+			:link="link"
+			:password="password"
+			@save="save"
+			@reorder="reorder"
 		/>
 	</div>
 </template>
@@ -28,40 +28,40 @@ import SubjectEdit from './SubjectEdit.vue';
 
 export default {
 	name: 'Subject',
-	props: {
-		name: String,
-		link: String,
-		password: String,
-		id: String,
-		closeTab: Boolean,
-		closeTabAfter: Number
+	components: {
+		SubjectDisplay,
+		SubjectEdit,
 	},
-	data: function() {
+	props: {
+		name: { type: String, required: true },
+		link: { type: String, required: true },
+		password: { type: String, required: true },
+		id: { type: String, required: true },
+		closeTab: { type: Boolean, required: true },
+		closeTabAfter: { type: Number, required: true },
+	},
+	data: function () {
 		return {
-			edit: this.name === ''
+			edit: this.name === '',
 		};
 	},
 
 	methods: {
-		setEditMode: function(edit) {
+		setEditMode: function (edit) {
 			this.edit = edit;
 		},
-		reorder: function(direction) {
+		reorder: function (direction) {
 			this.$emit('reorderSubject', direction);
 		},
-		save: function(name, link, password) {
+		save: function (name, link, password) {
 			this.$emit('change', name, link, password);
 			this.edit = false;
-		}
+		},
 	},
-	components: {
-		SubjectDisplay,
-		SubjectEdit
-	}
 };
 </script>
 
-<style>
+<style scoped>
 .subject {
 	box-sizing: border-box;
 	padding: 15px;

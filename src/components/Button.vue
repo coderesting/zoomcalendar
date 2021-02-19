@@ -1,13 +1,13 @@
 <template>
 	<button v-bind="$props" v-on="$listeners">
-		<slot></slot>
+		<slot />
 	</button>
 </template>
 
 <script>
 export default {
 	name: 'Button',
-	created: function() {}
+	created: function () {},
 };
 </script>
 

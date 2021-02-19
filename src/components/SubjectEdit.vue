@@ -3,22 +3,22 @@
 		<div class="data">
 			<span>Name:</span>
 			<input
+				v-model="newName"
 				type="text"
 				placeholder="DM 2"
-				v-model="newName"
 				:class="{ error: !validName }"
 			/>
 
 			<span>Zoom-Link:</span>
 			<input
+				v-model="newLink"
 				placeholder="https://nordakademie-de.zoom.us/j/1234"
 				:class="{ error: !validUrl }"
 				type="text"
-				v-model="newLink"
 			/>
 
 			<span>Zoom-Password:</span>
-			<input placeholder="1234" v-model="newPassword" type="text" />
+			<input v-model="newPassword" placeholder="1234" type="text" />
 		</div>
 		<div class="actions">
 			<Button @click="reorder('down')">
@@ -32,8 +32,8 @@
 			</Button>
 			<Button
 				:disabled="!validInputs"
-				@click="save(newName, newLink, newPassword)"
 				class="iconButton"
+				@click="save(newName, newLink, newPassword)"
 			>
 				<SaveIcon :size="20" />
 			</Button>
@@ -50,25 +50,25 @@ import Button from './Button';
 
 export default {
 	name: 'SubjectEdit',
-	props: {
-		name: String,
-		link: String,
-		password: String
-	},
 
 	components: {
 		SaveIcon,
 		DeleteIcon,
 		ArrowUpIcon,
 		ArrowDownIcon,
-		Button
+		Button,
+	},
+	props: {
+		name: { type: String, required: true },
+		link: { type: String, required: true },
+		password: { type: String, required: true },
 	},
 
-	data: function() {
+	data: function () {
 		return {
 			newName: this.name,
 			newLink: this.link,
-			newPassword: this.password
+			newPassword: this.password,
 		};
 	},
 
@@ -89,16 +89,16 @@ export default {
 
 		validInputs() {
 			return this.validName && this.validUrl;
-		}
+		},
 	},
 	methods: {
-		reorder: function(direction) {
+		reorder: function (direction) {
 			this.$emit('reorder', direction);
 		},
-		save: function(name, link, password) {
+		save: function (name, link, password) {
 			this.$emit('save', name, link, password);
-		}
-	}
+		},
+	},
 };
 </script>
 

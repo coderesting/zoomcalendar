@@ -1,4 +1,4 @@
-export default function(weekText) {
+export default function (weekText) {
 	let week;
 	try {
 		week = JSON.parse(weekText);
