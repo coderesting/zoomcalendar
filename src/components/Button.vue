@@ -7,7 +7,7 @@
 <script>
 export default {
 	name: 'Button',
-	created: function() {}
+	created: function () {},
 };
 </script>
 

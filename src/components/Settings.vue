@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<SettingsIcon
-			:size="35"
 			id="settingsIcon"
+			:size="35"
 			class="icon"
 			@click="open = true"
 		/>
@@ -17,34 +17,34 @@
 				/>
 				<h2>Settings</h2>
 				<div class="actions">
-					<input type="file" ref="fileInput" accept=".json" />
+					<input ref="fileInput" type="file" accept=".json" />
 					<Button @click="importFile()">Import</Button>
-					<input type="text" v-model="exportName" />
+					<input v-model="exportName" type="text" />
 					<Button @click="exportFile()">Export</Button>
 					<div class="autoclose">
 						<span>Close join tab after</span
 						><input
+							v-model="closeTabAfterInput"
 							class="dark"
 							type="number"
-							v-model="closeTabAfterInput"
 							:class="{ error: !validCloseTabAfterInput }"
 							@blur="() => (closeTabAfterInput = closeTabAfter)"
 						/><span>s</span>
 					</div>
 					<ToggleButton
+						v-model="closeTabCheckbox"
 						:margin="5"
 						:width="61"
 						:height="28"
 						class="toggle"
-						v-model="closeTabCheckbox"
 					/>
 					<span>Dark theme</span>
 					<ToggleButton
+						v-model="darkThemeCheckbox"
 						:margin="5"
 						:width="61"
 						:height="28"
 						class="toggle"
-						v-model="darkThemeCheckbox"
 					/>
 				</div>
 			</div>
@@ -61,41 +61,41 @@ import { ToggleButton } from 'vue-js-toggle-button';
 
 export default {
 	name: 'Settings',
+	components: { SettingsIcon, CloseIcon, Button, ToggleButton },
 	props: {
-		week: Array,
-		closeTabAfter: Number,
+		week: { type: Array, required: true },
+		closeTabAfter: { type: Number, required: true },
 		closeTab: Boolean,
-		darkTheme: Boolean
+		darkTheme: Boolean,
 	},
-	data: function() {
+	data: function () {
 		return {
 			exportName: 'plan.json',
 			open: false,
 			closeTabCheckbox: this.closeTab,
 			closeTabAfterInput: this.closeTabAfter,
-			darkThemeCheckbox: this.darkTheme
+			darkThemeCheckbox: this.darkTheme,
 		};
 	},
 	computed: {
-		validCloseTabAfterInput: function() {
+		validCloseTabAfterInput: function () {
 			return parseFloat(this.closeTabAfterInput) >= 0;
-		}
+		},
 	},
-	components: { SettingsIcon, CloseIcon, Button, ToggleButton },
 	watch: {
-		closeTabCheckbox: function(newVal) {
+		closeTabCheckbox: function (newVal) {
 			this.$emit('closeTabChanged', newVal);
 		},
-		closeTabAfterInput: function(newVal) {
+		closeTabAfterInput: function (newVal) {
 			if (this.validCloseTabAfterInput)
 				this.$emit('closeTabAfterChanged', parseFloat(newVal));
 		},
-		darkThemeCheckbox: function(newVal) {
+		darkThemeCheckbox: function (newVal) {
 			this.$emit('darkThemeChanged', newVal);
-		}
+		},
 	},
 	methods: {
-		importFile: function() {
+		importFile: function () {
 			const files = this.$refs.fileInput.files;
 			if (files.length == 0) {
 				this.showNotification('No file selected', 'error');
@@ -103,7 +103,7 @@ export default {
 			}
 
 			const reader = new FileReader();
-			reader.addEventListener('load', event => {
+			reader.addEventListener('load', (event) => {
 				const correctData = weekDataCheck(event.target.result);
 
 				if (correctData != null) {
@@ -118,7 +118,7 @@ export default {
 			reader.readAsText(this.$refs.fileInput.files[0]);
 		},
 
-		exportFile: function() {
+		exportFile: function () {
 			if (this.exportName.trim() == '') {
 				this.showNotification('No filename specified', 'error');
 				return;
@@ -138,15 +138,15 @@ export default {
 			this.showNotification('Exported ' + this.exportName, 'success');
 		},
 
-		showNotification: function(title, type) {
+		showNotification: function (title, type) {
 			this.$notify({
 				group: 'main',
 				title: title,
 				duration: 5000,
-				type: type
+				type: type,
 			});
-		}
-	}
+		},
+	},
 };
 </script>
 

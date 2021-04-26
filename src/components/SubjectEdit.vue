@@ -3,42 +3,42 @@
 		<div class="data">
 			<span>Name:</span>
 			<input
+				v-model="newName"
 				type="text"
 				placeholder="DM 2"
-				v-model="newName"
 				:class="{ error: !validName, onColor: true }"
 			/>
 
 			<span>Zoom-Link:</span>
 			<input
+				v-model="newLink"
 				placeholder="https://nordakademie-de.zoom.us/j/1234"
 				:class="{ error: !validUrl, onColor: true }"
 				type="text"
-				v-model="newLink"
 			/>
 
 			<span>Zoom-Password:</span>
 			<input
-				placeholder="1234"
 				v-model="newPassword"
+				placeholder="1234"
 				type="text"
 				class="onColor"
 			/>
 		</div>
 		<div class="actions">
-			<Button @click="reorder('down')" class="onColor">
+			<Button class="onColor" @click="reorder('down')">
 				<ArrowDownIcon :size="20" />
 			</Button>
-			<Button @click="reorder('up')" class="onColor">
+			<Button class="onColor" @click="reorder('up')">
 				<ArrowUpIcon :size="20" />
 			</Button>
-			<Button @click="save('', '', '')" class="onColor">
+			<Button class="onColor" @click="save('', '', '')">
 				<DeleteIcon :size="20" />
 			</Button>
 			<Button
 				:disabled="!validInputs"
-				@click="save(newName, newLink, newPassword)"
 				class="onColor"
+				@click="save(newName, newLink, newPassword)"
 			>
 				<SaveIcon :size="20" />
 			</Button>
@@ -55,25 +55,25 @@ import Button from './Button';
 
 export default {
 	name: 'SubjectEdit',
-	props: {
-		name: String,
-		link: String,
-		password: String
-	},
 
 	components: {
 		SaveIcon,
 		DeleteIcon,
 		ArrowUpIcon,
 		ArrowDownIcon,
-		Button
+		Button,
+	},
+	props: {
+		name: { type: String, required: true },
+		link: { type: String, required: true },
+		password: { type: String, required: true },
 	},
 
-	data: function() {
+	data: function () {
 		return {
 			newName: this.name,
 			newLink: this.link,
-			newPassword: this.password
+			newPassword: this.password,
 		};
 	},
 
@@ -94,16 +94,16 @@ export default {
 
 		validInputs() {
 			return this.validName && this.validUrl;
-		}
+		},
 	},
 	methods: {
-		reorder: function(direction) {
+		reorder: function (direction) {
 			this.$emit('reorder', direction);
 		},
-		save: function(name, link, password) {
+		save: function (name, link, password) {
 			this.$emit('save', name, link, password);
-		}
-	}
+		},
+	},
 };
 </script>
 

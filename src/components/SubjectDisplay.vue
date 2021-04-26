@@ -2,22 +2,22 @@
 	<div class="display">
 		<h2>{{ name }}</h2>
 		<div class="actions">
-			<Button title="Edit subject" @click="$emit('edit')" class="onColor">
+			<Button title="Edit subject" class="onColor" @click="$emit('edit')">
 				<EditIcon title="Edit subject" :size="20" />
 			</Button>
 
 			<Button
 				title="Copy password to clipboard"
 				:disabled="password === ''"
-				@click="copyPasswordToClipboard"
 				class="onColor"
+				@click="copyPasswordToClipboard"
 				><CopyIcon title="Copy password to clipboard" :size="20"
 			/></Button>
 
 			<Button
 				title="Launch Zoom meeting (also copies password)"
-				@click="joinMeeting"
 				class="onColor"
+				@click="joinMeeting"
 			>
 				<LaunchIcon
 					title="Launch Zoom meeting (also copies password)"
@@ -36,28 +36,28 @@ import Button from './Button.vue';
 
 export default {
 	name: 'SubjectDisplay',
-	props: {
-		name: String,
-		link: String,
-		password: String,
-		closeTab: Boolean,
-		closeTabAfter: Number
-	},
 	components: {
 		EditIcon,
 		CopyIcon,
 		Button,
-		LaunchIcon
+		LaunchIcon,
+	},
+	props: {
+		name: { type: String, required: true },
+		link: { type: String, required: true },
+		password: { type: String, required: true },
+		closeTab: { type: Boolean, required: true },
+		closeTabAfter: { type: Number, required: true },
 	},
 
 	data: () => {
 		return {
 			copyState: '',
-			edit: true
+			edit: true,
 		};
 	},
 	methods: {
-		copyPasswordToClipboard: async function() {
+		copyPasswordToClipboard: async function () {
 			this.copyState = '';
 			if (!navigator.clipboard) {
 				this.$notify({
@@ -65,7 +65,7 @@ export default {
 					title: 'Failed to copy the password',
 					text: `Here is your pasword: ${this.password}`,
 					duration: 10000,
-					type: 'error'
+					type: 'error',
 				});
 				throw new Error('Copy to clipboard failed');
 			}
@@ -74,11 +74,11 @@ export default {
 				group: 'main',
 				title: 'Password copied to clipboard',
 				duration: 2000,
-				type: 'success'
+				type: 'success',
 			});
 		},
 
-		joinMeeting: async function() {
+		joinMeeting: async function () {
 			await this.copyPasswordToClipboard();
 			const win = window.open(this.link, '_blank');
 			if (this.closeTab) {
@@ -86,12 +86,12 @@ export default {
 					win.close();
 				}, this.closeTabAfter * 1000);
 			}
-		}
-	}
+		},
+	},
 };
 </script>
 
-<style>
+<style scoped>
 .display {
 	height: 100%;
 	display: flex;
@@ -110,11 +110,5 @@ export default {
 .display > .actions {
 	display: flex;
 	justify-content: center;
-}
-
-.display > .actions > a {
-	text-decoration: none;
-	display: flex;
-	align-items: stretch;
 }
 </style>

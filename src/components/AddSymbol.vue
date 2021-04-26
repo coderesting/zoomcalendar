@@ -9,10 +9,10 @@
 <script>
 export default {
 	name: 'AddSymbol',
+	components: {},
 	props: {
-		dayIdx: Number
+		dayIdx: { type: Number, required: true },
 	},
-	components: {}
 };
 </script>
 
