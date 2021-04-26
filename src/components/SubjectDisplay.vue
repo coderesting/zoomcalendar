@@ -2,7 +2,7 @@
 	<div class="display">
 		<h2>{{ name }}</h2>
 		<div class="actions">
-			<Button title="Edit subject" @click="$emit('edit')">
+			<Button title="Edit subject" @click="$emit('edit')" class="onColor">
 				<EditIcon title="Edit subject" :size="20" />
 			</Button>
 
@@ -10,13 +10,14 @@
 				title="Copy password to clipboard"
 				:disabled="password === ''"
 				@click="copyPasswordToClipboard"
-			>
-				<CopyIcon title="Copy password to clipboard" :size="20" />
-			</Button>
+				class="onColor"
+				><CopyIcon title="Copy password to clipboard" :size="20"
+			/></Button>
 
 			<Button
 				title="Launch Zoom meeting (also copies password)"
 				@click="joinMeeting"
+				class="onColor"
 			>
 				<LaunchIcon
 					title="Launch Zoom meeting (also copies password)"
@@ -35,94 +36,62 @@ import Button from './Button.vue';
 
 export default {
 	name: 'SubjectDisplay',
+	props: {
+		name: String,
+		link: String,
+		password: String,
+		closeTab: Boolean,
+		closeTabAfter: Number
+	},
 	components: {
 		EditIcon,
 		CopyIcon,
 		Button,
-		LaunchIcon,
-	},
-	props: {
-		name: { type: String, required: true },
-		link: { type: String, required: true },
-		password: { type: String, required: true },
-		closeTab: { type: Boolean, required: true },
-		closeTabAfter: { type: Number, required: true },
+		LaunchIcon
 	},
 
 	data: () => {
 		return {
-			edit: true,
+			copyState: '',
+			edit: true
 		};
 	},
 	methods: {
-		copyPasswordToClipboard: async function () {
-			let status = 0;
-			if (navigator.clipboard) {
-				try {
-					await navigator.clipboard.writeText(this.password);
-					status = 2;
-				} catch (error) {
-					status = 0;
-				}
+		copyPasswordToClipboard: async function() {
+			this.copyState = '';
+			if (!navigator.clipboard) {
+				this.$notify({
+					group: 'main',
+					title: 'Failed to copy the password',
+					text: `Here is your pasword: ${this.password}`,
+					duration: 10000,
+					type: 'error'
+				});
+				throw new Error('Copy to clipboard failed');
 			}
-
-			if (status == 0) {
-				const inputElm = document.createElement('input');
-				inputElm.setAttribute('type', 'text');
-				inputElm.style.opacity = 0;
-				inputElm.value = this.password;
-				document.body.appendChild(inputElm);
-				inputElm.select();
-				status = 1;
-				if (!document.execCommand('copy')) status = 0;
-				inputElm.remove();
-			}
-
-			switch (status) {
-				case 2:
-					this.$notify({
-						group: 'main',
-						title: 'Password copied to clipboard',
-						duration: 2000,
-						type: 'success',
-					});
-					break;
-				case 1:
-					this.$notify({
-						group: 'main',
-						title:
-							'Not sure if the password was copied to clipboard (just try)',
-						text: `Here is your pasword for backup: ${this.password}`,
-						duration: 20000,
-					});
-					break;
-				case 0:
-					this.$notify({
-						group: 'main',
-						title: 'Failed to copy the password to clipboard',
-						text: `Here is your pasword: ${this.password}`,
-						duration: 20000,
-						type: 'error',
-					});
-					break;
-			}
-		},
-
-		joinMeeting: async function () {
-			this.copyPasswordToClipboard().finally(() => {
-				const win = window.open(this.link, '_blank');
-				if (this.closeTab) {
-					setTimeout(() => {
-						win.close();
-					}, this.closeTabAfter * 1000);
-				}
+			await navigator.clipboard.writeText(this.password);
+			this.$notify({
+				group: 'main',
+				title: 'Password copied to clipboard',
+				duration: 2000,
+				type: 'success'
 			});
 		},
-	},
+
+		joinMeeting: async function() {
+			await this.copyPasswordToClipboard();
+			const win = window.open(this.link, '_blank');
+			if (this.closeTab) {
+				setTimeout(() => {
+					win.close();
+				}, this.closeTabAfter * 1000);
+			}
+		}
+	}
 };
 </script>
 
-<style scoped>
+<style>
 .display {
 	height: 100%;
 	display: flex;
@@ -135,11 +104,17 @@ export default {
 	font-size: 19px;
 	margin-top: 0px;
 	text-align: center;
-	color: var(--light);
+	color: var(--text-on-color);
 }
 
 .display > .actions {
 	display: flex;
 	justify-content: center;
+}
+
+.display > .actions > a {
+	text-decoration: none;
+	display: flex;
+	align-items: stretch;
 }
 </style>

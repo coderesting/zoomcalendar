@@ -2,25 +2,26 @@
 	<div id="calendar">
 		<Settings
 			:week="week"
-			:close-tab="closeTab"
-			:close-tab-after="closeTabAfter"
 			@weekImport="importWeek"
-			@closeTabAfterChanged="(val) => (closeTabAfter = val)"
-			@closeTabChanged="(val) => (closeTab = val)"
+			:closeTab="closeTab"
+			:closeTabAfter="closeTabAfter"
+			@closeTabAfterChanged="val => (closeTabAfter = val)"
+			@closeTabChanged="val => (closeTab = val)"
+			:darkTheme="darkTheme"
+			@darkThemeChanged="val => (darkTheme = val)"
 		/>
 		<Week
 			:week="week"
-			:close-tab="closeTab"
-			:close-tab-after="closeTabAfter"
 			@editSubject="editSubject"
 			@addSubject="addSubject"
 			@reorderSubject="reorderSubject"
+			:closeTab="closeTab"
+			:closeTabAfter="closeTabAfter"
 		/>
 		<notifications
 			group="main"
 			position="bottom right"
-			:close-on-click="false"
-			:max="5"
+			:closeOnClick="false"
 		/>
 	</div>
 </template>
@@ -35,25 +36,32 @@ export default {
 	name: 'Calendar',
 	components: {
 		Week,
-		Settings,
+		Settings
 	},
-	data: function () {
+	data: function() {
 		return {
 			week: null,
 			closeTab: true,
 			closeTabAfter: 2000,
+			darkTheme: false
 		};
 	},
 	watch: {
-		closeTab: function (newVal) {
+		closeTab: function(newVal) {
 			localStorage.closeTab = newVal;
 		},
-		closeTabAfter: function (newVal) {
+		closeTabAfter: function(newVal) {
 			localStorage.closeTabAfter = newVal;
 		},
+		darkTheme: function(newVal) {
+			if (newVal) document.body.classList.add('dark');
+			else document.body.classList.remove('dark');
+			localStorage.darkTheme = newVal;
+		}
 	},
-	created: function () {
+	created: function() {
 		this.closeTab = localStorage.closeTab == 'true' ? true : false;
+		this.darkTheme = localStorage.darkTheme == 'true' ? true : false;
 		const closeTabAfterStored = parseFloat(localStorage.closeTabAfter);
 		this.closeTabAfter =
 			closeTabAfterStored >= 0 ? closeTabAfterStored : 10;
@@ -64,33 +72,33 @@ export default {
 			this.week = [
 				{
 					name: 'Monday',
-					subjects: [],
+					subjects: []
 				},
 				{
 					name: 'Tuesday',
-					subjects: [],
+					subjects: []
 				},
 				{
 					name: 'Wednesday',
-					subjects: [],
+					subjects: []
 				},
 				{
 					name: 'Thursday',
-					subjects: [],
+					subjects: []
 				},
 				{
 					name: 'Friday',
-					subjects: [],
-				},
+					subjects: []
+				}
 			];
 	},
 
 	methods: {
-		loadSavedWeek: function () {
+		loadSavedWeek: function() {
 			let correctData = weekDataCheck(this.$cookies.get('week'));
 			if (correctData) {
-				correctData.forEach((day) => {
-					day.subjects.forEach((subject) => {
+				correctData.forEach(day => {
+					day.subjects.forEach(subject => {
 						if (!subject.id)
 							subject.id = Math.random()
 								.toString(36)
@@ -102,28 +110,30 @@ export default {
 			return null;
 		},
 
-		saveWeek: function (week) {
+		saveWeek: function(week) {
 			this.$cookies.set('week', JSON.stringify(week));
 		},
 
-		importWeek: function (week) {
+		importWeek: function(week) {
 			this.week = week;
 			console.log(week);
 			this.saveWeek(this.week);
 		},
 
-		addSubject: function (dayIdx) {
+		addSubject: function(dayIdx) {
 			this.week[dayIdx].subjects.push({
 				name: '',
 				link: '',
 				pass: '',
-				id: Math.random().toString(36).substr(2, 9),
+				id: Math.random()
+					.toString(36)
+					.substr(2, 9)
 			});
 			this.saveWeek(this.week);
 		},
 
-		editSubject: function (id, name, link, password) {
-			this.week.forEach((day) => {
+		editSubject: function(id, name, link, password) {
+			this.week.forEach(day => {
 				day.subjects.forEach((subject, subjectIdx) => {
 					if (subject.id == id) {
 						if (name === '') {
@@ -139,7 +149,7 @@ export default {
 			this.saveWeek(this.week);
 		},
 
-		reorderSubject: function (id, direction) {
+		reorderSubject: function(id, direction) {
 			for (let j = 0; j < this.week.length; j++) {
 				let day = this.week[j];
 
@@ -184,32 +194,45 @@ export default {
 			}
 
 			this.saveWeek(this.week);
-		},
-	},
+		}
+	}
 };
 </script>
 
-<!-- eslint-disable-next-line -->
 <style>
 html {
 	height: 100%;
-	--light: #eee;
-	--dark: #424242;
-	--darkColor: #002d73;
-	--lightColor: #039be5;
-	--gradient: linear-gradient(
-		130deg,
-		var(--darkColor) 0%,
-		var(--lightColor) 100%
-	);
 }
 
 body {
 	height: 100%;
-	background-color: var(--light);
+	background-color: var(--background);
 	font-family: Arial;
 	padding: 0;
 	margin: 0;
+	transition: background 0.3s ease;
+
+	--background: #eee;
+
+	--text: #424242;
+	--text-contrast: var(--background);
+
+	--text-on-color: var(--background);
+	--text-on-color-contrast: var(--text);
+
+	--gradient: linear-gradient(130deg, #002d73 0%, #039be5 100%);
+}
+
+body.dark {
+	--background: #263238;
+
+	--text: #eee;
+	--text-contrast: var(--background);
+
+	--text-on-color: var(--text);
+	--text-on-color-contrast: var(--background);
+
+	--gradient: linear-gradient(130deg, #002d73 0%, #1976d2 100%);
 }
 
 .material-design-icon {
@@ -219,11 +242,11 @@ body {
 
 input[type='text'],
 input[type='number'] {
-	background-color: rgba(0, 0, 0, 0.2);
+	background-color: transparent;
 	border-radius: 5px;
 	padding: 3px;
-	border: solid var(--light) 2px;
-	color: var(--light);
+	border: solid var(--text) 2px;
+	color: var(--text);
 	font-family: Arial;
 	font-size: inherit;
 	width: 100%;
@@ -232,9 +255,10 @@ input[type='number'] {
 	transition: 0.2s ease;
 }
 
-input[type='text'].dark,
-input[type='number'].dark {
-	color: var(--dark);
+input.onColor {
+	border-color: var(--text-on-color);
+	color: var(--text-on-color);
+	background-color: rgba(0, 0, 0, 0.2);
 }
 
 input:focus {

@@ -1,13 +1,13 @@
 <template>
 	<div>
 		<SettingsIcon
-			id="settingsIcon"
 			:size="35"
+			id="settingsIcon"
 			class="icon"
 			@click="open = true"
 		/>
 		<div id="settings" :class="{ open: open }">
-			<div class="background" @click="open = false" />
+			<div class="background" @click="open = false"></div>
 			<div class="popup">
 				<CloseIcon
 					id="settingsCloseIcon"
@@ -17,26 +17,34 @@
 				/>
 				<h2>Settings</h2>
 				<div class="actions">
-					<input ref="fileInput" type="file" accept=".json" />
-					<Button class="dark" @click="importFile()"> Import </Button>
-					<input v-model="exportName" type="text" class="dark" />
-					<Button class="dark" @click="exportFile()"> Export </Button>
+					<input type="file" ref="fileInput" accept=".json" />
+					<Button @click="importFile()">Import</Button>
+					<input type="text" v-model="exportName" />
+					<Button @click="exportFile()">Export</Button>
 					<div class="autoclose">
 						<span>Close join tab after</span
 						><input
-							v-model="closeTabAfterInput"
 							class="dark"
 							type="number"
+							v-model="closeTabAfterInput"
 							:class="{ error: !validCloseTabAfterInput }"
 							@blur="() => (closeTabAfterInput = closeTabAfter)"
 						/><span>s</span>
 					</div>
 					<ToggleButton
-						v-model="closeTabCheckbox"
 						:margin="5"
 						:width="61"
 						:height="28"
 						class="toggle"
+						v-model="closeTabCheckbox"
+					/>
+					<span>Dark theme</span>
+					<ToggleButton
+						:margin="5"
+						:width="61"
+						:height="28"
+						class="toggle"
+						v-model="darkThemeCheckbox"
 					/>
 				</div>
 			</div>
@@ -53,36 +61,41 @@ import { ToggleButton } from 'vue-js-toggle-button';
 
 export default {
 	name: 'Settings',
-	components: { SettingsIcon, CloseIcon, Button, ToggleButton },
 	props: {
-		week: { type: Array, required: true },
-		closeTabAfter: { type: Number, required: true },
+		week: Array,
+		closeTabAfter: Number,
 		closeTab: Boolean,
+		darkTheme: Boolean
 	},
-	data: function () {
+	data: function() {
 		return {
 			exportName: 'plan.json',
 			open: false,
 			closeTabCheckbox: this.closeTab,
 			closeTabAfterInput: this.closeTabAfter,
+			darkThemeCheckbox: this.darkTheme
 		};
 	},
 	computed: {
-		validCloseTabAfterInput: function () {
+		validCloseTabAfterInput: function() {
 			return parseFloat(this.closeTabAfterInput) >= 0;
-		},
+		}
 	},
+	components: { SettingsIcon, CloseIcon, Button, ToggleButton },
 	watch: {
-		closeTabCheckbox: function (newVal) {
+		closeTabCheckbox: function(newVal) {
 			this.$emit('closeTabChanged', newVal);
 		},
-		closeTabAfterInput: function (newVal) {
+		closeTabAfterInput: function(newVal) {
 			if (this.validCloseTabAfterInput)
 				this.$emit('closeTabAfterChanged', parseFloat(newVal));
 		},
+		darkThemeCheckbox: function(newVal) {
+			this.$emit('darkThemeChanged', newVal);
+		}
 	},
 	methods: {
-		importFile: function () {
+		importFile: function() {
 			const files = this.$refs.fileInput.files;
 			if (files.length == 0) {
 				this.showNotification('No file selected', 'error');
@@ -90,7 +103,7 @@ export default {
 			}
 
 			const reader = new FileReader();
-			reader.addEventListener('load', (event) => {
+			reader.addEventListener('load', event => {
 				const correctData = weekDataCheck(event.target.result);
 
 				if (correctData != null) {
@@ -105,7 +118,7 @@ export default {
 			reader.readAsText(this.$refs.fileInput.files[0]);
 		},
 
-		exportFile: function () {
+		exportFile: function() {
 			if (this.exportName.trim() == '') {
 				this.showNotification('No filename specified', 'error');
 				return;
@@ -125,23 +138,21 @@ export default {
 			this.showNotification('Exported ' + this.exportName, 'success');
 		},
 
-		showNotification: function (title, type) {
+		showNotification: function(title, type) {
 			this.$notify({
 				group: 'main',
 				title: title,
 				duration: 5000,
-				type: type,
+				type: type
 			});
-		},
-	},
+		}
+	}
 };
 </script>
 
 <style scoped>
 h2 {
 	margin: 0px;
-	color: var(--dark);
-	text-align: center;
 }
 
 #settingsIcon {
@@ -149,10 +160,10 @@ h2 {
 	top: 0px;
 	left: 0px;
 	padding: 20px;
-	background-color: var(--light);
+	background-color: var(--background);
 	border-bottom-right-radius: 10px;
 	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-	color: var(--dark);
+	color: var(--text);
 }
 
 #settingsIcon > * {
@@ -191,7 +202,8 @@ h2 {
 
 #settings > .popup {
 	position: relative;
-	background-color: var(--light);
+	color: var(--text);
+	background-color: var(--background);
 	padding: 20px;
 	border-radius: 10px;
 	display: grid;
@@ -217,7 +229,7 @@ h2 {
 	display: grid;
 	grid-template-columns: auto auto;
 	gap: 10px;
-	place-items: center;
+	align-items: center;
 }
 
 #settings > .popup > .actions > input[type='text'] {
@@ -233,6 +245,7 @@ h2 {
 #settings > .popup > .actions > .autoclose > input {
 	width: 30px;
 	margin: 0px 5px;
+	color: inherit;
 }
 
 #settings > .popup > .actions > .toggle {

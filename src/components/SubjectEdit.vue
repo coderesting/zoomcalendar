@@ -3,37 +3,42 @@
 		<div class="data">
 			<span>Name:</span>
 			<input
-				v-model="newName"
 				type="text"
 				placeholder="DM 2"
-				:class="{ error: !validName }"
+				v-model="newName"
+				:class="{ error: !validName, onColor: true }"
 			/>
 
 			<span>Zoom-Link:</span>
 			<input
-				v-model="newLink"
 				placeholder="https://nordakademie-de.zoom.us/j/1234"
-				:class="{ error: !validUrl }"
+				:class="{ error: !validUrl, onColor: true }"
 				type="text"
+				v-model="newLink"
 			/>
 
 			<span>Zoom-Password:</span>
-			<input v-model="newPassword" placeholder="1234" type="text" />
+			<input
+				placeholder="1234"
+				v-model="newPassword"
+				type="text"
+				class="onColor"
+			/>
 		</div>
 		<div class="actions">
-			<Button @click="reorder('down')">
+			<Button @click="reorder('down')" class="onColor">
 				<ArrowDownIcon :size="20" />
 			</Button>
-			<Button @click="reorder('up')">
+			<Button @click="reorder('up')" class="onColor">
 				<ArrowUpIcon :size="20" />
 			</Button>
-			<Button @click="save('', '', '')">
+			<Button @click="save('', '', '')" class="onColor">
 				<DeleteIcon :size="20" />
 			</Button>
 			<Button
 				:disabled="!validInputs"
-				class="iconButton"
 				@click="save(newName, newLink, newPassword)"
+				class="onColor"
 			>
 				<SaveIcon :size="20" />
 			</Button>
@@ -50,25 +55,25 @@ import Button from './Button';
 
 export default {
 	name: 'SubjectEdit',
+	props: {
+		name: String,
+		link: String,
+		password: String
+	},
 
 	components: {
 		SaveIcon,
 		DeleteIcon,
 		ArrowUpIcon,
 		ArrowDownIcon,
-		Button,
-	},
-	props: {
-		name: { type: String, required: true },
-		link: { type: String, required: true },
-		password: { type: String, required: true },
+		Button
 	},
 
-	data: function () {
+	data: function() {
 		return {
 			newName: this.name,
 			newLink: this.link,
-			newPassword: this.password,
+			newPassword: this.password
 		};
 	},
 
@@ -89,16 +94,16 @@ export default {
 
 		validInputs() {
 			return this.validName && this.validUrl;
-		},
+		}
 	},
 	methods: {
-		reorder: function (direction) {
+		reorder: function(direction) {
 			this.$emit('reorder', direction);
 		},
-		save: function (name, link, password) {
+		save: function(name, link, password) {
 			this.$emit('save', name, link, password);
-		},
-	},
+		}
+	}
 };
 </script>
 
@@ -112,7 +117,7 @@ export default {
 }
 
 .edit > .data > span {
-	color: var(--light);
+	color: var(--text-on-color);
 }
 
 .edit > .actions {

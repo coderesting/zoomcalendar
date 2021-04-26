@@ -1,27 +1,29 @@
 <template>
 	<button v-bind="$props" v-on="$listeners">
-		<slot />
+		<slot></slot>
 	</button>
 </template>
 
 <script>
 export default {
 	name: 'Button',
-	created: function () {},
+	created: function() {}
 };
 </script>
 
 <style scoped>
 button {
+	--button-color: var(--text);
+	--button-text-hover: var(--text-contrast);
 	font-size: 15px;
 	font-family: Arial;
-	color: var(--light);
+	color: var(--button-color);
 	text-align: center;
 	display: block;
 	margin: 7px;
 	padding: 5px 10px;
 	background-color: transparent;
-	border: solid var(--light) 2px;
+	border: solid var(--button-color) 2px;
 	border-radius: 20px;
 	cursor: pointer;
 	transition: 0.2s ease;
@@ -29,19 +31,14 @@ button {
 	white-space: nowrap;
 }
 
-button.dark {
-	color: var(--dark);
-	border-color: var(--dark);
+button.onColor {
+	--button-color: var(--text-on-color);
+	--button-text-hover: var(--text-on-color-contrast);
 }
 
 button:hover {
-	background-color: var(--light);
-	color: var(--dark);
-}
-
-button:hover.dark {
-	background-color: var(--dark);
-	color: var(--light);
+	color: var(--button-text-hover);
+	background-color: var(--button-color);
 }
 
 button:disabled {
