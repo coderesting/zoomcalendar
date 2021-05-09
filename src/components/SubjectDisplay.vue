@@ -119,6 +119,7 @@ export default {
 	top: 0px;
 	left: 0px;
 	cursor: grab;
+	opacity: 0;
 }
 
 .display > h2 {

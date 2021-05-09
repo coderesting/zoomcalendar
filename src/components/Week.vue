@@ -9,7 +9,7 @@
 				group="subjects"
 				draggable=".subject"
 				animation="250"
-				handle=".dragIcon"
+				handle=".subject"
 				empty-insert-threshold="10"
 				forceFallback="true"
 				class="subjectWrapper"
