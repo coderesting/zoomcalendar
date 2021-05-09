@@ -70,6 +70,7 @@ export default {
 	width: 100%;
 	box-sizing: border-box;
 	overflow: auto;
+	height: 100vh;
 }
 
 #week > .day {
