@@ -1,6 +1,9 @@
 <template>
 	<div class="add">
-		<span class="plusSymbol" title="Add new subject" @click="$emit('add')"
+		<span
+			class="plusSymbol"
+			title="Add new subject"
+			@click="$store.commit('ADD_SUBJECT', dayIdx)"
 			>+</span
 		>
 	</div>
@@ -9,7 +12,6 @@
 <script>
 export default {
 	name: 'AddSymbol',
-	components: {},
 	props: {
 		dayIdx: { type: Number, required: true },
 	},
@@ -28,7 +30,11 @@ export default {
 	border-radius: 100px;
 	font-size: 30px;
 	color: var(--text-on-color);
-	background: var(--gradient);
+	background: linear-gradient(
+		20deg,
+		var(--gradient-from) 30%,
+		var(--gradient-to) 100%
+	);
 	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 	transition: 0.3s ease;
 }

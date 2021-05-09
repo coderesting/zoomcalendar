@@ -1,107 +1,94 @@
 <template>
 	<div id="week">
-		<h1
-			v-for="(weekDay, index) of getWeekDays()"
-			:key="'h' + index"
-			:style="{ gridRow: weekDay.row, gridColumn: weekDay.column }"
-		>
-			{{ weekDay.name }}
-		</h1>
-		<Subject
-			v-for="subject of getSubjects()"
-			:id="subject.id"
-			:key="'s' + subject.id"
-			:style="{ gridRow: subject.row, gridColumn: subject.column }"
-			:name="subject.name"
-			:link="subject.link"
-			:password="subject.pass"
-			:close-tab="closeTab"
-			:close-tab-after="closeTabAfter"
-			@change="
-				(name, link, password) =>
-					$emit('editSubject', subject.id, name, link, password)
-			"
-			@reorderSubject="
-				(direction) => $emit('reorderSubject', subject.id, direction)
-			"
-		/>
-		<AddSymbol
-			v-for="(symbol, index) of getAddSymbols()"
-			:key="'a' + index"
-			:day-idx="index"
-			:style="{ gridRow: symbol.row, gridColumn: symbol.column }"
-			@add="$emit('addSubject', index)"
-		/>
+		<div v-for="(weekDay, dayIdx) of week" :key="dayIdx" class="day">
+			<h1>
+				{{ weekDay.name }}
+			</h1>
+			<draggable
+				:value="week[dayIdx].subjects"
+				group="subjects"
+				draggable=".subject"
+				animation="250"
+				handle=".dragIcon"
+				empty-insert-threshold="10"
+				class="subjectWrapper"
+				@input="(day) => $store.commit('SET_DAY', { dayIdx, day })"
+			>
+				<Subject
+					v-for="(subject, subjectIdx) of week[dayIdx].subjects"
+					:id="subject.id"
+					:key="subject.id"
+					:day-idx="dayIdx"
+					:subject-idx="subjectIdx"
+					:name="subject.name"
+					:link="subject.link"
+					:pass="subject.pass"
+					:start-time="subject.startTime"
+					:end-time="subject.endTime"
+				/>
+				<AddSymbol
+					v-if="!$store.state.settings.syncSchedule"
+					slot="footer"
+					:day-idx="dayIdx"
+					@add="$emit('ADD_SUBJECT', dayIdx)"
+				/>
+			</draggable>
+		</div>
 	</div>
 </template>
 
 <script>
 import Subject from './Subject.vue';
 import AddSymbol from './AddSymbol.vue';
+import draggable from 'vuedraggable';
+import { mapGetters } from 'vuex';
 
 export default {
 	name: 'Week',
 	components: {
 		Subject,
 		AddSymbol,
+		draggable,
 	},
-	props: {
-		week: { type: Array, required: true },
-		closeTab: { type: Boolean, required: true },
-		closeTabAfter: { type: Number, required: true },
-	},
+	props: {},
 	data: function () {
 		return {};
 	},
-	methods: {
-		getWeekDays: function () {
-			let dayNames = [];
-			this.week.forEach((day, i) => {
-				dayNames.push({
-					name: day.name,
-					column: i + 1,
-					row: 1,
-				});
-			});
-			return dayNames;
-		},
-		getSubjects: function () {
-			let subjects = [];
-			this.week.forEach((day, dayIdx) => {
-				day.subjects.forEach((subject, subjectIdx) => {
-					subjects.push({
-						row: parseInt(subjectIdx) + 2,
-						column: parseInt(dayIdx) + 1,
-						...subject,
-					});
-				});
-			});
-			return subjects;
-		},
-		getAddSymbols: function () {
-			let pluses = [];
-			this.week.forEach((day, dayIdx) => {
-				pluses.push({
-					row: day.subjects.length + 2,
-					column: dayIdx + 1,
-				});
-			});
-			return pluses;
-		},
+	computed: {
+		...mapGetters({
+			week: 'week',
+		}),
 	},
 };
 </script>
 
 <style scoped>
 #week {
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-	justify-items: center;
+	display: flex;
 	gap: 20px;
 	padding: 0px 20px;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+#week > .day {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 20px;
 }
 
 h1 {
 	color: var(--text);
+	text-align: center;
+}
+
+#week > .day > .subjectWrapper {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr;
+	place-items: center;
+	gap: 20px;
 }
 </style>

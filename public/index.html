@@ -37,5 +37,70 @@
 			>
 		</noscript>
 		<div id="calendar"></div>
+
+		<style>
+			html {
+				height: 100%;
+			}
+
+			body {
+				height: 100%;
+				background-color: var(--background);
+				font-family: Arial;
+				padding: 0;
+				margin: 0;
+				transition: background 0.3s ease;
+				--app-color: #1565c0;
+				--gradient-from: #0d47a1;
+				--gradient-to: #2196f3;
+				--background: #eee;
+				--text: #263238;
+				--text-on-color: var(--background);
+				--dark-text: var(--text);
+				--error: #f44336;
+			}
+
+			body.dark {
+				--app-color: #1565c0;
+				--gradient-from: #0d47a1;
+				--gradient-to: #2196f3;
+				--background: #263238;
+				--text: #eee;
+				--text-on-color: var(--text);
+				--dark-text: var(--background);
+			}
+
+			.material-design-icon {
+				display: flex;
+				cursor: pointer;
+			}
+
+			.vue-notification-group {
+				margin: 5px;
+			}
+
+			.vue-notification {
+				margin: 5px;
+				border-radius: 10px;
+				border-left: none !important;
+			}
+
+			.vue-notification.ok {
+				background: var(--app-color) !important;
+			}
+
+			.vue-notification.success {
+				background: #4caf50 !important;
+			}
+
+			.vue-notification.error {
+				background-color: var(--error) !important;
+			}
+
+			.vue-notification > * {
+				font-size: 120%;
+				margin: 5px;
+			}
+		</style>
 	</body>
 </html>

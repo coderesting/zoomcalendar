@@ -14,7 +14,7 @@ export default {
 <style scoped>
 button {
 	--button-color: var(--text);
-	--button-text-hover: var(--text-contrast);
+	--button-text-hover: var(--background);
 	font-size: 15px;
 	font-family: Arial;
 	color: var(--button-color);

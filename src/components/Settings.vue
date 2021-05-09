@@ -1,121 +1,227 @@
 <template>
 	<div>
-		<SettingsIcon
-			id="settingsIcon"
-			:size="35"
-			class="icon"
-			@click="open = true"
-		/>
-		<div id="settings" :class="{ open: open }">
-			<div class="background" @click="open = false"></div>
-			<div class="popup">
-				<CloseIcon
-					id="settingsCloseIcon"
-					class="icon"
-					:size="28"
-					@click="open = false"
+		<SettingsIcon />
+
+		<Dialog
+			:value="$store.state.settings.open"
+			name="Settings"
+			@input="(open) => $store.commit('SET_SETTINGS_OPEN', open)"
+		>
+			<div id="settings">
+				<Input
+					type="file"
+					accept=".json"
+					@input="(files) => (importFiles = files)"
 				/>
-				<h2>Settings</h2>
-				<div class="actions">
-					<input ref="fileInput" type="file" accept=".json" />
-					<Button @click="importFile()">Import</Button>
-					<input v-model="exportName" type="text" />
-					<Button @click="exportFile()">Export</Button>
-					<div class="autoclose">
-						<span>Close join tab after</span
-						><input
-							v-model="closeTabAfterInput"
-							class="dark"
-							type="number"
-							:class="{ error: !validCloseTabAfterInput }"
-							@blur="() => (closeTabAfterInput = closeTabAfter)"
-						/><span>s</span>
-					</div>
-					<ToggleButton
-						v-model="closeTabCheckbox"
-						:margin="5"
-						:width="61"
-						:height="28"
-						class="toggle"
+				<Button @click="importFile()">Import</Button>
+				<Input
+					v-model="exportName"
+					:class="{ error: !validExportName }"
+					type="text"
+				/>
+				<Button :disabled="!validExportName" @click="exportFile()"
+					>Export</Button
+				>
+				<div>
+					<span>Close join tab after</span
+					><Input
+						v-model="closeTabAfter"
+						type="number"
+						:class="{ error: !validCloseTabAfter }"
+					/><span>s</span>
+				</div>
+				<ToggleButton
+					v-model="closeTab"
+					:margin="5"
+					:width="61"
+					:height="28"
+					:sync="true"
+					class="toggle"
+					:color="appColor"
+					:disabled="!validCloseTabAfter"
+				/>
+				<span>Dark theme</span>
+				<ToggleButton
+					v-model="darkTheme"
+					:margin="5"
+					:width="61"
+					:height="28"
+					:sync="true"
+					class="toggle"
+					:color="appColor"
+				/>
+				<div>
+					<span>Sync Schedule</span>
+					<Input
+						v-model="centuria"
+						placeholder="Centuria"
+						type="text"
+						:class="{ error: !validCenturia }"
 					/>
-					<span>Dark theme</span>
-					<ToggleButton
-						v-model="darkThemeCheckbox"
-						:margin="5"
-						:width="61"
-						:height="28"
-						class="toggle"
+					<Input
+						v-model="semester"
+						placeholder="Semester"
+						type="number"
+						:class="{ error: !validSemester }"
 					/>
 				</div>
+
+				<ToggleButton
+					v-model="syncSchedule"
+					:margin="5"
+					:width="61"
+					:height="28"
+					:sync="true"
+					class="toggle"
+					:color="appColor"
+					:disabled="!validCenturia || !validSemester"
+				/>
+
+				<div v-if="syncSchedule">
+					<InfoIcon class="infoIcon" /><span
+						>Name your subjects exactly like your schedule</span
+					>
+				</div>
+				<div v-if="syncSchedule"></div>
+				<div v-if="syncSchedule">
+					<InfoIcon class="infoIcon" /><span
+						>You cannot change your schedule in this mode</span
+					>
+				</div>
 			</div>
-		</div>
+		</Dialog>
 	</div>
 </template>
 
 <script>
-import SettingsIcon from 'vue-material-design-icons/Cog';
-import CloseIcon from 'vue-material-design-icons/Close';
-import weekDataCheck from '../util/weekDataCheck.js';
+import SettingsIcon from './SettingsIcon';
+import InfoIcon from 'vue-material-design-icons/InformationOutline';
+import sanitizeWeek from '../weekManipulation/sanitizeWeek.js';
 import Button from './Button';
+import Input from './Input';
 import { ToggleButton } from 'vue-js-toggle-button';
+import Dialog from './Dialog';
+import validate from '../store/validate';
 
 export default {
 	name: 'Settings',
-	components: { SettingsIcon, CloseIcon, Button, ToggleButton },
-	props: {
-		week: { type: Array, required: true },
-		closeTabAfter: { type: Number, required: true },
-		closeTab: Boolean,
-		darkTheme: Boolean,
+	components: {
+		SettingsIcon,
+		InfoIcon,
+		Button,
+		ToggleButton,
+		Input,
+		Dialog,
 	},
+	props: {},
 	data: function () {
 		return {
 			exportName: 'plan.json',
-			open: false,
-			closeTabCheckbox: this.closeTab,
-			closeTabAfterInput: this.closeTabAfter,
-			darkThemeCheckbox: this.darkTheme,
+			importFiles: null,
 		};
 	},
 	computed: {
-		validCloseTabAfterInput: function () {
-			return parseFloat(this.closeTabAfterInput) >= 0;
+		validCloseTabAfter() {
+			return validate.closeTabAfter(this.closeTabAfter);
+		},
+		validExportName() {
+			return validate.exportName(this.exportName);
+		},
+		validCenturia() {
+			return validate.centuria(this.centuria);
+		},
+		validSemester() {
+			return validate.semester(this.semester);
+		},
+		appColor: function () {
+			return getComputedStyle(document.body).getPropertyValue(
+				'--app-color'
+			);
+		},
+		closeTab: {
+			get() {
+				return this.$store.state.settings.closeTab;
+			},
+			set(closeTab) {
+				this.$store.commit('SET_CLOSE_TAB', closeTab);
+			},
+		},
+		closeTabAfter: {
+			get() {
+				return this.$store.state.settings.closeTabAfter;
+			},
+			set(closeTabAfter) {
+				const value = parseFloat(closeTabAfter);
+				this.$store.commit(
+					'SET_CLOSE_TAB_AFTER',
+					isNaN(value) ? null : value
+				);
+			},
+		},
+		darkTheme: {
+			get() {
+				return this.$store.state.settings.darkTheme;
+			},
+			set(darkTheme) {
+				this.$store.commit('SET_DARK_THEME', darkTheme);
+			},
+		},
+		centuria: {
+			get() {
+				return this.$store.state.settings.centuria;
+			},
+			set(centuria) {
+				this.$store.commit('SET_CENTURIA', centuria);
+			},
+		},
+		semester: {
+			get() {
+				return this.$store.state.settings.semester;
+			},
+			set(semester) {
+				this.$store.commit('SET_SEMESTER', semester);
+			},
+		},
+		syncSchedule: {
+			get() {
+				return this.$store.state.settings.syncSchedule;
+			},
+			set(syncSchedule) {
+				this.$store.commit('SET_SYNC_SCHEDULE', syncSchedule);
+			},
 		},
 	},
 	watch: {
-		closeTabCheckbox: function (newVal) {
-			this.$emit('closeTabChanged', newVal);
+		validCloseTabAfter(valid) {
+			if (!valid) this.closeTab = false;
 		},
-		closeTabAfterInput: function (newVal) {
-			if (this.validCloseTabAfterInput)
-				this.$emit('closeTabAfterChanged', parseFloat(newVal));
+		validCenturia(valid) {
+			if (!valid) this.syncSchedule = false;
 		},
-		darkThemeCheckbox: function (newVal) {
-			this.$emit('darkThemeChanged', newVal);
+		validSemester(valid) {
+			if (!valid) this.syncSchedule = false;
 		},
 	},
 	methods: {
 		importFile: function () {
-			const files = this.$refs.fileInput.files;
-			if (files.length == 0) {
+			if (this.importFiles == null || this.importFiles.length === 0) {
 				this.showNotification('No file selected', 'error');
 				return;
 			}
 
 			const reader = new FileReader();
 			reader.addEventListener('load', (event) => {
-				const correctData = weekDataCheck(event.target.result);
-
-				if (correctData != null) {
-					this.$emit('weekImport', correctData);
-					console.log(event.target);
+				try {
+					const week = sanitizeWeek(JSON.parse(event.target.result));
+					if (week === null) throw 'Week not clean';
+					this.$store.dispatch('importWeek', week);
 					this.showNotification('Imported Data', 'success');
-				} else {
+				} catch {
 					this.showNotification('JSON format is wrong', 'error');
 				}
 			});
 
-			reader.readAsText(this.$refs.fileInput.files[0]);
+			reader.readAsText(this.importFiles[0]);
 		},
 
 		exportFile: function () {
@@ -128,7 +234,13 @@ export default {
 			element.setAttribute(
 				'href',
 				'data:text/json;charset=utf-8,' +
-					encodeURIComponent(JSON.stringify(this.week, null, 2))
+					encodeURIComponent(
+						JSON.stringify(
+							this.$store.getters.weekForExport,
+							null,
+							2
+						)
+					)
 			);
 			element.setAttribute('download', this.exportName);
 			element.style.display = 'none';
@@ -151,104 +263,34 @@ export default {
 </script>
 
 <style scoped>
-h2 {
-	margin: 0px;
-}
-
-#settingsIcon {
-	position: fixed;
-	top: 0px;
-	left: 0px;
-	padding: 20px;
-	background-color: var(--background);
-	border-bottom-right-radius: 10px;
-	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-	color: var(--text);
-}
-
-#settingsIcon > * {
-	transition: 0.3s ease;
-}
-
-#settingsIcon:hover > * {
-	transform: rotate(30deg);
-}
-
 #settings {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	opacity: 0;
-	transition: 0.3s ease;
-	pointer-events: none;
-}
-
-#settings.open {
-	opacity: 1;
-	pointer-events: auto;
-}
-
-#settings > .background {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.5);
-}
-
-#settings > .popup {
-	position: relative;
-	color: var(--text);
-	background-color: var(--background);
-	padding: 20px;
-	border-radius: 10px;
-	display: grid;
-	grid-template-columns: auto;
-	place-items: center;
-	gap: 20px;
-	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-	transition: 0.4s ease;
-	transform: scale(1.2);
-}
-
-#settings.open > .popup {
-	transform: none;
-}
-
-#settings > .popup > #settingsCloseIcon {
-	position: absolute;
-	top: 20px;
-	left: 20px;
-}
-
-#settings > .popup > .actions {
 	display: grid;
 	grid-template-columns: auto auto;
 	gap: 10px;
 	align-items: center;
 }
 
-#settings > .popup > .actions > input[type='text'] {
+#settings > input[type='text'] {
 	padding: 7px;
 }
 
-#settings > .popup > .actions > .autoclose {
+#settings > div {
 	display: flex;
 	align-items: center;
 	width: 100%;
 }
 
-#settings > .popup > .actions > .autoclose > input {
+#settings > div > input {
 	width: 30px;
 	margin: 0px 5px;
 	color: inherit;
 }
 
-#settings > .popup > .actions > .toggle {
+#settings .infoIcon {
+	margin-right: 5px;
+}
+
+#settings > .toggle {
 	margin: 10px;
 }
 </style>

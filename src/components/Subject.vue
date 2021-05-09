@@ -1,23 +1,24 @@
 <template>
 	<div class="subject">
 		<SubjectDisplay
-			v-if="!edit"
+			v-if="mode === 'display'"
 			:name="name"
 			:link="link"
-			:password="password"
-			:close-tab="closeTab"
-			:close-tab-after="closeTabAfter"
-			@edit="setEditMode(true)"
+			:pass="pass"
+			:start-time="startTime"
+			:end-time="endTime"
+			@edit="mode = 'edit'"
 		/>
 
 		<SubjectEdit
-			v-if="edit"
-			:id="id"
+			v-if="mode === 'edit'"
 			:name="name"
 			:link="link"
-			:password="password"
+			:pass="pass"
+			:start-time="startTime"
+			:end-time="endTime"
 			@save="save"
-			@reorder="reorder"
+			@remove="remove"
 		/>
 	</div>
 </template>
@@ -33,29 +34,40 @@ export default {
 		SubjectEdit,
 	},
 	props: {
+		dayIdx: { type: Number, required: true },
+		subjectIdx: { type: Number, required: true },
 		name: { type: String, required: true },
 		link: { type: String, required: true },
-		password: { type: String, required: true },
-		id: { type: String, required: true },
-		closeTab: { type: Boolean, required: true },
-		closeTabAfter: { type: Number, required: true },
+		pass: { type: String, required: true },
+		startTime: { type: String, required: true },
+		endTime: { type: String, required: true },
 	},
+
 	data: function () {
 		return {
-			edit: this.name === '',
+			mode: this.name === '' ? 'edit' : 'display',
 		};
 	},
 
 	methods: {
-		setEditMode: function (edit) {
-			this.edit = edit;
+		save: function (name, link, pass, startTime, endTime) {
+			this.$store.commit('EDIT_SUBJECT', {
+				dayIdx: this.dayIdx,
+				subjectIdx: this.subjectIdx,
+				name,
+				link,
+				pass,
+				startTime,
+				endTime,
+			});
+			this.mode = 'display';
 		},
-		reorder: function (direction) {
-			this.$emit('reorderSubject', direction);
-		},
-		save: function (name, link, password) {
-			this.$emit('change', name, link, password);
-			this.edit = false;
+
+		remove: function () {
+			this.$store.commit('REMOVE_SUBJECT', {
+				dayIdx: this.dayIdx,
+				subjectIdx: this.subjectIdx,
+			});
 		},
 	},
 };
@@ -66,7 +78,11 @@ export default {
 	box-sizing: border-box;
 	padding: 15px;
 	border-radius: 10px;
-	background: var(--gradient);
+	background: linear-gradient(
+		20deg,
+		var(--gradient-from) 30%,
+		var(--gradient-to) 100%
+	);
 	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 	place-self: stretch;
 }
