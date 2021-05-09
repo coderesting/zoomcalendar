@@ -52,6 +52,8 @@ class NAKToolsBadge extends HTMLElement {
 					height: 50px;
 					z-index: 10;
 					pointer-events: auto;
+					background-color: ${this.getAttribute('background-color')};
+					border-radius: 7px;
 				}
 			</style>
 		`;

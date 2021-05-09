@@ -69,6 +69,7 @@ export default {
 	padding: 0px 20px;
 	width: 100%;
 	box-sizing: border-box;
+	overflow: auto;
 }
 
 #week > .day {
