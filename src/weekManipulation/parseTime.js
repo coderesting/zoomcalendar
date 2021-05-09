@@ -1,9 +1,9 @@
-import { TIME_REGEX } from '../store/validate';
+const TIME_Regex = /([0-2]?[0-9]):([0-5]?[0-9])/;
 
 export default function parseTime(time) {
 	if (time == null) return null;
 
-	const insertMatch = time.match(TIME_REGEX);
+	const insertMatch = time.match(TIME_Regex);
 	if (insertMatch === null || insertMatch.length !== 3) return null;
 
 	return {
