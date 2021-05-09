@@ -26,13 +26,13 @@
 					:start-time="subject.startTime"
 					:end-time="subject.endTime"
 				/>
-				<AddSymbol
-					v-if="!$store.state.settings.syncSchedule"
-					slot="footer"
-					:day-idx="dayIdx"
-					@add="$emit('ADD_SUBJECT', dayIdx)"
-				/>
 			</draggable>
+			<AddSymbol
+				v-if="!$store.state.settings.syncSchedule"
+				slot="footer"
+				:day-idx="dayIdx"
+				@add="$emit('ADD_SUBJECT', dayIdx)"
+			/>
 		</div>
 	</div>
 </template>
