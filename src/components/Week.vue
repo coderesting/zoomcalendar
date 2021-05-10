@@ -10,7 +10,6 @@
 				draggable=".subject"
 				animation="250"
 				handle=".subject"
-				empty-insert-threshold="10"
 				forceFallback="true"
 				class="subjectWrapper"
 				@input="(day) => $store.commit('SET_DAY', { dayIdx, day })"
