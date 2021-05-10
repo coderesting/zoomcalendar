@@ -114,7 +114,6 @@ export default {
 	flex-direction: column;
 	justify-content: space-between;
 	position: relative;
-	cursor: grab;
 }
 
 .display > .content > .dragIcon {
@@ -123,6 +122,10 @@ export default {
 	left: 0px;
 	cursor: grab;
 	opacity: 0;
+}
+
+.display > .content {
+	cursor: grab;
 }
 
 .display > .content > h2 {
