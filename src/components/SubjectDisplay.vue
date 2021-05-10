@@ -135,7 +135,7 @@ export default {
 	color: var(--text-on-color);
 }
 
-.display > .time {
+.display > .content > .time {
 	display: flex;
 	justify-content: center;
 	color: var(--text-on-color);
