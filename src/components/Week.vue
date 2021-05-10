@@ -9,7 +9,7 @@
 				group="subjects"
 				draggable=".subject"
 				animation="250"
-				handle=".subject"
+				handle=".content"
 				forceFallback="true"
 				class="subjectWrapper"
 				@input="(day) => $store.commit('SET_DAY', { dayIdx, day })"

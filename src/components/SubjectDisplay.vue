@@ -1,18 +1,20 @@
 <template>
 	<div class="display">
-		<DragIcon
-			v-if="!$store.state.settings.syncSchedule"
-			title="move"
-			class="dragIcon"
-			fill-color="#eee"
-			:size="20"
-		/>
+		<div class="content">
+			<DragIcon
+				v-if="!$store.state.settings.syncSchedule"
+				title="move"
+				class="dragIcon"
+				fill-color="#eee"
+				:size="20"
+			/>
 
-		<h2>{{ name }}</h2>
+			<h2>{{ name }}</h2>
 
-		<div v-if="startTime != '' || endTime !== ''" class="time">
-			{{ startTime === '' ? '?' : startTime }} -
-			{{ endTime === '' ? '?' : endTime }}
+			<div v-if="startTime != '' || endTime !== ''" class="time">
+				{{ startTime === '' ? '?' : startTime }} -
+				{{ endTime === '' ? '?' : endTime }}
+			</div>
 		</div>
 
 		<div class="actions">
@@ -112,9 +114,10 @@ export default {
 	flex-direction: column;
 	justify-content: space-between;
 	position: relative;
+	cursor: grab;
 }
 
-.display > .dragIcon {
+.display > .content > .dragIcon {
 	position: absolute;
 	top: 0px;
 	left: 0px;
@@ -122,7 +125,7 @@ export default {
 	opacity: 0;
 }
 
-.display > h2 {
+.display > .content > h2 {
 	margin: 0px 26px 7px 25px;
 	font-size: 19px;
 	text-align: center;
