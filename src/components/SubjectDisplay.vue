@@ -1,27 +1,17 @@
 <template>
 	<div class="display">
-		<div class="content">
-			<DragIcon
-				v-if="!$store.state.settings.syncSchedule"
-				title="move"
-				class="dragIcon"
-				fill-color="#eee"
-				:size="20"
-			/>
+		<h2>{{ name }}</h2>
 
-			<h2>{{ name }}</h2>
-
-			<div v-if="startTime != '' || endTime !== ''" class="time">
-				{{ startTime === '' ? '?' : startTime }} -
-				{{ endTime === '' ? '?' : endTime }}
-			</div>
+		<div v-if="startTime != '' || endTime !== ''" class="time">
+			{{ startTime === '' ? '?' : startTime }} -
+			{{ endTime === '' ? '?' : endTime }}
 		</div>
 
 		<div class="actions">
 			<Button
 				title="Edit subject"
 				:disabled="$store.state.settings.syncSchedule"
-				class="onColor"
+				class="onColor undraggable"
 				@click="$emit('edit')"
 			>
 				<EditIcon title="Edit subject" :size="20" />
@@ -30,7 +20,7 @@
 			<Button
 				title="Copy password to clipboard"
 				:disabled="pass === ''"
-				class="onColor"
+				class="onColor undraggable"
 				@click="copyPassToClipboard"
 				><CopyIcon title="Copy password to clipboard" :size="20"
 			/></Button>
@@ -38,7 +28,7 @@
 			<Button
 				title="Launch Zoom meeting (also copies password)"
 				:disabled="link === ''"
-				class="onColor"
+				class="onColor undraggable"
 				@click="joinMeeting"
 			>
 				<LaunchIcon
@@ -54,7 +44,6 @@
 import EditIcon from 'vue-material-design-icons/Pencil';
 import CopyIcon from 'vue-material-design-icons/ContentCopy';
 import LaunchIcon from 'vue-material-design-icons/Launch';
-import DragIcon from 'vue-material-design-icons/CursorMove';
 import Button from './Button.vue';
 
 export default {
@@ -64,7 +53,6 @@ export default {
 		CopyIcon,
 		Button,
 		LaunchIcon,
-		DragIcon,
 	},
 	props: {
 		name: { type: String, required: true },
@@ -114,28 +102,17 @@ export default {
 	flex-direction: column;
 	justify-content: space-between;
 	position: relative;
-}
-
-.display > .content > .dragIcon {
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	cursor: grab;
-	opacity: 0;
-}
-
-.display > .content {
 	cursor: grab;
 }
 
-.display > .content > h2 {
+.display > h2 {
 	margin: 0px 26px 7px 25px;
 	font-size: 19px;
 	text-align: center;
 	color: var(--text-on-color);
 }
 
-.display > .content > .time {
+.display > .time {
 	display: flex;
 	justify-content: center;
 	color: var(--text-on-color);
