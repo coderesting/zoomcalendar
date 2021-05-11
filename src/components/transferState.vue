@@ -20,6 +20,7 @@
 					<ErrorIcon
 						v-if="!mutation.valid"
 						:key="'4' + name"
+						class="errorIcon"
 						:title="name + ' is not valid'"
 						:fill-color="errorColor"
 					/>
@@ -172,7 +173,7 @@ export default {
 	white-space: nowrap;
 }
 
-#transferState > .mutations .material-design-icon {
+#transferState > .mutations .errorIcon {
 	place-self: center;
 }
 
