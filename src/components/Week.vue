@@ -9,8 +9,8 @@
 				group="subjects"
 				draggable=".subject"
 				animation="250"
-				handle=".dragIcon"
-				empty-insert-threshold="10"
+				handle=".content"
+				forceFallback="true"
 				class="subjectWrapper"
 				@input="(day) => $store.commit('SET_DAY', { dayIdx, day })"
 			>
@@ -26,13 +26,13 @@
 					:start-time="subject.startTime"
 					:end-time="subject.endTime"
 				/>
-				<AddSymbol
-					v-if="!$store.state.settings.syncSchedule"
-					slot="footer"
-					:day-idx="dayIdx"
-					@add="$emit('ADD_SUBJECT', dayIdx)"
-				/>
 			</draggable>
+			<AddSymbol
+				v-if="!$store.state.settings.syncSchedule"
+				slot="footer"
+				:day-idx="dayIdx"
+				@add="$emit('ADD_SUBJECT', dayIdx)"
+			/>
 		</div>
 	</div>
 </template>
