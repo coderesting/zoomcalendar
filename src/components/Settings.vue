@@ -187,6 +187,15 @@ export default {
 				return this.$store.state.settings.syncSchedule;
 			},
 			set(syncSchedule) {
+				if (syncSchedule) {
+					this.$notify({
+						group: 'main',
+						title: `Syncing schedule`,
+						duration: 3000,
+						type: 'ok',
+					});
+				}
+
 				this.$store.commit('SET_SYNC_SCHEDULE', syncSchedule);
 			},
 		},

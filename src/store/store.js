@@ -49,8 +49,8 @@ const storeData = {
 				Vue.notify({
 					group: 'main',
 					title: `Synced schedule ${centuria}-${semester}`,
-					duration: 5000,
-					type: 'ok',
+					duration: 3000,
+					type: 'success',
 				});
 			} catch {
 				Vue.notify({
