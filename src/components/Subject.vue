@@ -87,7 +87,11 @@ export default {
 	place-self: stretch;
 }
 
-.sortable-drag {
+.subject.sortable-drag {
 	opacity: 1 !important;
+}
+
+.subject.sortable-ghost {
+	opacity: 0;
 }
 </style>
