@@ -1,5 +1,8 @@
 <template>
-	<div class="display">
+	<div
+		class="display"
+		:style="{ cursor: $store.state.settings.syncSchedule ? '' : 'grab' }"
+	>
 		<h2>{{ name }}</h2>
 
 		<div v-if="startTime != '' || endTime !== ''" class="time">
@@ -102,7 +105,6 @@ export default {
 	flex-direction: column;
 	justify-content: space-between;
 	position: relative;
-	cursor: grab;
 }
 
 .display > h2 {

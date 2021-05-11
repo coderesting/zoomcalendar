@@ -7,7 +7,9 @@
 			<draggable
 				:value="week[dayIdx].subjects"
 				group="subjects"
-				draggable=".subject"
+				:draggable="
+					$store.state.settings.syncSchedule ? '' : '.subject'
+				"
 				animation="250"
 				handle=".display"
 				filter=".undraggable"

@@ -55,8 +55,7 @@ function fixTime(time) {
 function autoFixWeek(week) {
 	week.forEach((day) => {
 		day.subjects.forEach((subject) => {
-			if (!subject.id)
-				subject.id = Math.random().toString(36).substr(2, 9);
+			subject.id = Math.random().toString(36).substr(2, 9);
 			subject.startTime = fixTime(subject.startTime);
 			subject.endTime = fixTime(subject.endTime);
 		});
