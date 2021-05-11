@@ -3,7 +3,7 @@
 		id="settingsIcon"
 		:size="35"
 		class="icon"
-		@click="$store.commit('SET_SETTINGS_OPEN', true)"
+		@click="$store.commit('SET_SETTINGS_OPEN', true"
 	/>
 </template>
 
