@@ -2,12 +2,23 @@
 	<div class="dialog" :class="{ open: value }">
 		<div class="background" @click="$emit('input', false)"></div>
 		<div class="popup">
-			<CloseIcon
-				class="closeIcon"
-				:size="28"
-				@click="$emit('input', false)"
-			/>
-			<h2>{{ name }}</h2>
+			<div class="header">
+				<CloseIcon
+					class="closeIcon"
+					:size="28"
+					@click="$emit('input', false)"
+				/>
+				<h2>{{ name }}</h2>
+				<a
+					:class="{
+						helpIcon: true,
+						disabled: helpLink === '',
+					}"
+					:href="helpLink"
+					target="_blank"
+					><HelpIcon :size="28"
+				/></a>
+			</div>
 			<slot></slot>
 		</div>
 	</div>
@@ -15,22 +26,41 @@
 
 <script>
 import CloseIcon from 'vue-material-design-icons/Close';
+import HelpIcon from 'vue-material-design-icons/HelpCircleOutline';
 
 export default {
 	name: 'Dialog',
 	components: {
 		CloseIcon,
+		HelpIcon,
 	},
 	props: {
 		value: { type: Boolean, required: true },
+		helpLink: { type: String, default: '' },
 		name: { type: String, required: true },
 	},
 };
 </script>
 
 <style scoped>
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+}
 h2 {
 	margin: 0px;
+}
+
+.header > .helpIcon {
+	text-decoration: none;
+	color: inherit;
+}
+
+.header > .helpIcon.disabled {
+	opacity: 0;
+	pointer-events: none;
 }
 
 .dialog {
@@ -78,11 +108,5 @@ h2 {
 
 .dialog.open > .popup {
 	transform: none;
-}
-
-.dialog > .popup > .closeIcon {
-	position: absolute;
-	top: 20px;
-	left: 20px;
 }
 </style>

@@ -5,6 +5,7 @@
 		<Dialog
 			:value="$store.state.settings.open"
 			name="Settings"
+			help-link="https://github.com/coderesting/zoomcalendar"
 			@input="(open) => $store.commit('SET_SETTINGS_OPEN', open)"
 		>
 			<div id="settings">
