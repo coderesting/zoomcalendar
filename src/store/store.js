@@ -85,12 +85,22 @@ function inializeStore() {
 		},
 	});
 	const store = new Vuex.Store({ ...storeData, plugins: [vuexLocal.plugin] });
-	store.watch((state) => {
-		if (state.settings.darkTheme) document.body.classList.add('dark');
-		else document.body.classList.remove('dark');
+	store.watch(
+		(state) => state.settings.darkTheme,
+		(darkTheme) => {
+			if (darkTheme) document.body.classList.add('dark');
+			else document.body.classList.remove('dark');
+		},
+		{ immediate: true }
+	);
 
-		if (state.settings.syncSchedule) store.dispatch('syncSchedule');
-	});
+	store.watch(
+		(state) => state.settings.syncSchedule,
+		(syncSchedule) => {
+			if (syncSchedule) store.dispatch('syncSchedule');
+		},
+		{ immediate: true }
+	);
 	return store;
 }
 
