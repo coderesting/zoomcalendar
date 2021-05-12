@@ -37,7 +37,7 @@ const storeData = {
 			const { centuria, semester } = store.state.settings;
 			try {
 				const res = await fetch(
-					`https://schedule-cleaner.herokuapp.com/cleaned-schedule/${centuria}-${semester}.ics`
+					`https://schedule-cleaner.herokuapp.com/cleaned-schedule/${centuria}_${semester}.ics`
 				);
 				if (!res.ok) throw 'URL not available';
 				const buffer = await res.arrayBuffer();
