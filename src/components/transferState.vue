@@ -28,7 +28,9 @@
 			</div>
 			<div class="actions">
 				<Button @click="discard">Discard</Button>
-				<Button @click="mutate">Import</Button>
+				<Button :disabled="!importPosible" @click="mutate"
+					>Import</Button
+				>
 			</div>
 		</div>
 	</Dialog>
@@ -98,6 +100,12 @@ export default {
 				'--app-color'
 			);
 		},
+		importPosible: function () {
+			for (const importValue of Object.values(this.importValues)) {
+				if (importValue.import) return true;
+			}
+			return false;
+		},
 	},
 
 	watch: {},
@@ -115,11 +123,11 @@ export default {
 						validMutations[mutation] != null &&
 						validMutations[mutation].validate(value);
 
-					this.importValues[mutation] = {
+					this.$set(this.importValues, mutation, {
 						valid,
 						value,
 						import: valid,
-					};
+					});
 				}
 
 				this.open = true;
