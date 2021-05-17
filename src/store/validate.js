@@ -1,5 +1,7 @@
 const LINK_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
 const TIME_REGEX = /(^([0-2][0-9]):([0-5][0-9])$)/;
+const CENTURIA_REGEX = /^[a-zA-Z][0-9]{2}[a-zA-Z]$/;
+const SEMESTER_REGEX = /^[1-7]$/;
 
 export default {
 	LINK_REGEX,
@@ -20,10 +22,10 @@ export default {
 		return typeof syncSchedule === 'boolean';
 	},
 	centuria: function (centuria) {
-		return /^[A-Z][0-9]{2}[a-z]$/.test(centuria);
+		return CENTURIA_REGEX.test(centuria);
 	},
 	semester: function (semester) {
-		return /^[1-7]$/.test(semester);
+		return SEMESTER_REGEX.test(semester);
 	},
 
 	subjectName(newName) {
