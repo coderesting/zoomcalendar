@@ -102,7 +102,7 @@ import Button from './Button';
 import Input from './Input';
 import { ToggleButton } from 'vue-js-toggle-button';
 import Dialog from './Dialog';
-import validate from '../store/validate';
+import validate from '../utils/validate';
 
 export default {
 	name: 'Settings',

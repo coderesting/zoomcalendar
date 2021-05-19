@@ -24,7 +24,7 @@
 				title="Copy password to clipboard"
 				:disabled="pass === ''"
 				class="onColor undraggable"
-				@click="copyPassToClipboard"
+				@click="() => copyPassToClipboard(pass)"
 				><CopyIcon title="Copy password to clipboard" :size="20"
 			/></Button>
 
@@ -32,7 +32,15 @@
 				title="Launch Zoom meeting (also copies password)"
 				:disabled="link === ''"
 				class="onColor undraggable"
-				@click="joinMeeting"
+				@click="
+					() =>
+						joinMeeting(
+							link,
+							pass,
+							$store.state.settings.closeTab,
+							$store.state.settings.closeTabAfter
+						)
+				"
 			>
 				<LaunchIcon
 					title="Launch Zoom meeting (also copies password)"
@@ -48,6 +56,7 @@ import EditIcon from 'vue-material-design-icons/Pencil';
 import CopyIcon from 'vue-material-design-icons/ContentCopy';
 import LaunchIcon from 'vue-material-design-icons/Launch';
 import Button from './Button.vue';
+import { copyPassToClipboard, joinMeeting } from '../utils/subjectActions';
 
 export default {
 	name: 'SubjectDisplay',
@@ -65,35 +74,8 @@ export default {
 		endTime: { type: String, required: true },
 	},
 	methods: {
-		copyPassToClipboard: async function () {
-			if (!navigator.clipboard) {
-				this.$notify({
-					group: 'main',
-					title: 'Failed to copy the password',
-					text: `Here is your pasword: ${this.pass}`,
-					duration: 10000,
-					type: 'error',
-				});
-				throw new Error('Copy to clipboard failed');
-			}
-			await navigator.clipboard.writeText(this.pass);
-			this.$notify({
-				group: 'main',
-				title: 'Password copied to clipboard',
-				duration: 2000,
-				type: 'success',
-			});
-		},
-
-		joinMeeting: async function () {
-			await this.copyPassToClipboard();
-			const win = window.open(this.link, '_blank');
-			if (this.$store.state.settings.closeTab) {
-				setTimeout(() => {
-					win.close();
-				}, this.$store.state.settings.closeTabAfter * 1000);
-			}
-		},
+		joinMeeting,
+		copyPassToClipboard,
 	},
 };
 </script>
