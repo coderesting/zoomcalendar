@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import validate from '../store/validate';
+import validate from '../utils/validate';
 import SaveIcon from 'vue-material-design-icons/ContentSave';
 import DeleteIcon from 'vue-material-design-icons/Delete';
 import Button from './Button';

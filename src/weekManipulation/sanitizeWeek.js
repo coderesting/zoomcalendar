@@ -1,5 +1,5 @@
 import parseTime from './parseTime';
-import validate from '../store/validate';
+import validate from '../utils/validate';
 const Validator = require('jsonschema').Validator;
 
 Validator.prototype.customFormats.link = function (link) {

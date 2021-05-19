@@ -41,7 +41,7 @@ import Dialog from './Dialog';
 import ErrorIcon from 'vue-material-design-icons/AlertCircleOutline';
 import Button from './Button';
 import { ToggleButton } from 'vue-js-toggle-button';
-import validate from '../store/validate';
+import validate from '../utils/validate';
 import sanitizeWeek from '../weekManipulation/sanitizeWeek';
 
 const validMutations = {
