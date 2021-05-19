@@ -6,6 +6,7 @@ import mergeWeeks from '../weekManipulation/mergeWeeks';
 import parseIcs from '../weekManipulation/parseICS';
 import sanitizeWeek from '../weekManipulation/sanitizeWeek';
 import settingsMutations from './settingsMutations';
+import { SubjectScheduler } from '../utils/SubjectScheduler';
 import weekMutations from './weekMutations';
 
 const storeData = {
@@ -101,6 +102,27 @@ function inializeStore() {
 		},
 		{ immediate: true }
 	);
+
+	const subjectScheduler = new SubjectScheduler();
+
+	setInterval(() => subjectScheduler.updateTimeouts(), 1000 * 60 * 60 * 10); // 10h
+
+	store.watch(
+		(state, getters) => {
+			return {
+				week: getters.week,
+				closeTab: state.settings.closeTab,
+				closeTabAfter: state.settings.closeTabAfter,
+			};
+		},
+		({ week, closeTab, closeTabAfter }) => {
+			subjectScheduler.setWeek(week, closeTab, closeTabAfter);
+		},
+		{
+			immediate: true,
+		}
+	);
+
 	return store;
 }
 
