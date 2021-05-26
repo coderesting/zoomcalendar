@@ -13,7 +13,7 @@
 
 <script>
 import Week from './Week.vue';
-import Settings from './Settings.vue';
+import Settings from './settings/Settings.vue';
 import TransferState from './transferState.vue';
 
 export default {

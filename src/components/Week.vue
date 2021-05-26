@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import Subject from './Subject.vue';
+import Subject from './subject/Subject.vue';
 import AddSymbol from './AddSymbol.vue';
 import draggable from 'vuedraggable';
 import { mapGetters } from 'vuex';

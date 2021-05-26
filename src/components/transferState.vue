@@ -37,9 +37,9 @@
 </template>
 
 <script>
-import Dialog from './Dialog';
+import Dialog from './standard/Dialog';
 import ErrorIcon from 'vue-material-design-icons/AlertCircleOutline';
-import Button from './Button';
+import Button from './standard/Button';
 import { ToggleButton } from 'vue-js-toggle-button';
 import validate from '../utils/validate';
 import sanitizeWeek from '../weekManipulation/sanitizeWeek';

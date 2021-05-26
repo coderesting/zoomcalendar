@@ -55,8 +55,8 @@
 import EditIcon from 'vue-material-design-icons/Pencil';
 import CopyIcon from 'vue-material-design-icons/ContentCopy';
 import LaunchIcon from 'vue-material-design-icons/Launch';
-import Button from './Button.vue';
-import { copyPassToClipboard, joinMeeting } from '../utils/subjectActions';
+import Button from '../standard/Button';
+import { copyPassToClipboard, joinMeeting } from '../../utils/subjectActions';
 
 export default {
 	name: 'SubjectDisplay',

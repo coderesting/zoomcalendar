@@ -69,11 +69,11 @@
 </template>
 
 <script>
-import validate from '../utils/validate';
+import validate from '../../utils/validate';
 import SaveIcon from 'vue-material-design-icons/ContentSave';
 import DeleteIcon from 'vue-material-design-icons/Delete';
-import Button from './Button';
-import Input from './Input';
+import Button from '../standard/Button';
+import Input from '../standard/Input';
 
 export default {
 	name: 'SubjectEdit',

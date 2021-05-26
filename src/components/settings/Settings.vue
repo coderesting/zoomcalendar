@@ -97,12 +97,12 @@
 <script>
 import SettingsIcon from './SettingsIcon';
 import InfoIcon from 'vue-material-design-icons/InformationOutline';
-import sanitizeWeek from '../weekManipulation/sanitizeWeek.js';
-import Button from './Button';
-import Input from './Input';
+import sanitizeWeek from '../../weekManipulation/sanitizeWeek.js';
+import Button from '../standard/Button';
+import Input from '../standard/Input';
 import { ToggleButton } from 'vue-js-toggle-button';
-import Dialog from './Dialog';
-import validate from '../utils/validate';
+import Dialog from '../standard/Dialog';
+import validate from '../../utils/validate';
 
 export default {
 	name: 'Settings',
