@@ -48,6 +48,7 @@ export default {
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
+	margin-bottom: 15px;
 }
 h2 {
 	margin: 0px;
@@ -96,10 +97,6 @@ h2 {
 	background-color: var(--background);
 	padding: 20px;
 	border-radius: 10px;
-	display: grid;
-	grid-template-columns: auto;
-	place-items: center;
-	gap: 20px;
 	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 	transition: 0.4s ease;
 	transform: scale(1.2);
