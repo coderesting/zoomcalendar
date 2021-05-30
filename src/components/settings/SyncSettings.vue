@@ -109,22 +109,6 @@ export default {
 </script>
 
 <style scoped>
-#syncSettings {
-}
-
-#syncSettings > .loginOptions {
-	width: 100%;
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
-	margin-bottom: 20px;
-}
-
-#syncSettings > .loginOptions > img {
-	width: 40px;
-	height: 40px;
-}
-
 #syncSettings > .importExport {
 	display: grid;
 	grid-template-columns: auto auto;

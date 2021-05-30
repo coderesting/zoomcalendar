@@ -6,6 +6,7 @@
 			:value="$store.state.settings.open"
 			name="Settings"
 			help-link="https://github.com/coderesting/zoomcalendar#zoom-calendar"
+			class="settingsPopup"
 			@input="(open) => $store.commit('SET_SETTINGS_OPEN', open)"
 		>
 			<div class="tabs">
