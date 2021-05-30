@@ -21,7 +21,6 @@ export async function copyPassToClipboard(pass) {
 }
 
 export async function joinMeeting(link, pass, closeTab, closeTabAfter) {
-	console.log('join');
 	if (pass) await copyPassToClipboard(pass);
 	const win = window.open(link, '_blank');
 	if (closeTab) {

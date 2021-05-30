@@ -90,7 +90,8 @@ export default {
 }
 
 .display > h2 {
-	margin: 0px 26px 7px 25px;
+	margin: 0px;
+	margin-bottom: 7px;
 	font-size: 19px;
 	text-align: center;
 	color: var(--text-on-color);

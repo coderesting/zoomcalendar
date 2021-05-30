@@ -14,10 +14,14 @@
 			class="toggle"
 			:disabled="!validCloseTabAfter"
 		/>
+
 		<span>Dark theme</span>
 		<Toggle v-model="darkTheme" :sync="true" class="toggle" />
+
+		<span>Show Saturday</span>
+		<Toggle v-model="showSaturday" :sync="true" class="toggle" />
 		<div>
-			<span>Live schedule</span>
+			<span>Sort schedule</span>
 			<Input
 				v-model="centuria"
 				placeholder="Centuria"
@@ -119,6 +123,14 @@ export default {
 				this.$store.commit('SET_DARK_THEME', darkTheme);
 			},
 		},
+		showSaturday: {
+			get() {
+				return this.$store.state.settings.showSaturday;
+			},
+			set(showSaturday) {
+				this.$store.commit('SET_SHOW_SATURDAY', showSaturday);
+			},
+		},
 		centuria: {
 			get() {
 				return this.$store.state.settings.centuria;
@@ -143,7 +155,7 @@ export default {
 				if (syncSchedule) {
 					this.$notify({
 						group: 'main',
-						title: `Syncing schedule`,
+						title: `Sorting schedule`,
 						duration: 3000,
 						type: 'ok',
 					});

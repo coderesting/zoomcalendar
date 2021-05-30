@@ -27,7 +27,6 @@ export default {
 	semester: function (semester) {
 		return SEMESTER_REGEX.test(semester);
 	},
-
 	subjectName(newName) {
 		return newName.trim() !== '';
 	},

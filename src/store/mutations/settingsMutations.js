@@ -2,6 +2,9 @@ export default {
 	SET_DARK_THEME(state, darkTheme) {
 		state.settings.darkTheme = darkTheme;
 	},
+	SET_SHOW_SATURDAY(state, showSaturday) {
+		state.settings.showSaturday = showSaturday;
+	},
 	SET_SETTINGS_OPEN(state, open) {
 		state.settings.open = open;
 	},

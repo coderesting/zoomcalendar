@@ -101,6 +101,7 @@ h2 {
 	transition: 0.4s ease;
 	transform: scale(1.2);
 	min-width: 300px;
+	max-width: 500px;
 }
 
 .dialog.open > .popup {
