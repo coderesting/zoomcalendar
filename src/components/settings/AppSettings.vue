@@ -17,7 +17,7 @@
 		<span>Dark theme</span>
 		<Toggle v-model="darkTheme" :sync="true" class="toggle" />
 		<div>
-			<span>Sync Schedule</span>
+			<span>Live schedule</span>
 			<Input
 				v-model="centuria"
 				placeholder="Centuria"

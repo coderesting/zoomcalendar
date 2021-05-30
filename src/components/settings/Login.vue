@@ -1,14 +1,25 @@
 <template>
-	<div id="loginOptions">
-		<img src="assets/login/google.svg" @click="() => login('google')" />
-		<img src="assets/login/discord.svg" @click="() => login('discord')" />
-		<img src="assets/login/github.svg" @click="() => login('github')" />
+	<div id="login">
+		<div v-if="$store.state.settings.loggedIn" class="user">
+			<img :src="$store.state.settings.avatarURL" />
+			<Button @click="() => logout()">Logout</Button>
+		</div>
+		<div v-if="!$store.state.settings.loggedIn" class="options">
+			<img src="assets/login/google.svg" @click="() => login('google')" />
+			<img
+				src="assets/login/discord.svg"
+				@click="() => login('discord')"
+			/>
+			<img src="assets/login/github.svg" @click="() => login('github')" />
+		</div>
 	</div>
 </template>
 
 <script>
+import Button from '../standard/Button';
 export default {
 	name: 'Login',
+	components: { Button },
 	methods: {
 		login(provider) {
 			window.location.href = `https://zoom.icetoast.cloud/api/auth/${provider}`;
@@ -21,7 +32,7 @@ export default {
 </script>
 
 <style scoped>
-#loginOptions {
+#login > .options {
 	width: 100%;
 	display: flex;
 	justify-content: space-around;
@@ -29,7 +40,18 @@ export default {
 	margin-bottom: 20px;
 }
 
-#loginOptions > img {
+#login > .user {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 10px;
+}
+
+#login > .user > img {
+	border-radius: 100%;
+	cursor: auto;
+}
+
+img {
 	width: 40px;
 	height: 40px;
 	cursor: pointer;

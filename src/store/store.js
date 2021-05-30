@@ -19,6 +19,8 @@ const storeData = {
 			centuria: 'A19a',
 			semester: 4,
 			syncSchedule: false,
+			loggedIn: false,
+			avatarURL: null,
 		},
 	},
 	mutations: {
@@ -65,6 +67,7 @@ function inializeStore() {
 		},
 		{ immediate: true }
 	);
+	store.dispatch('checkLogin');
 	return store;
 }
 

@@ -20,4 +20,10 @@ export default {
 	SET_SEMESTER(state, semester) {
 		state.settings.semester = semester;
 	},
+	SET_LOGIN_STATE(state, loggedIn) {
+		state.settings.loggedIn = loggedIn;
+	},
+	SET_AVATAR_URL(state, avatarURL) {
+		state.settings.avatarURL = avatarURL;
+	},
 };
