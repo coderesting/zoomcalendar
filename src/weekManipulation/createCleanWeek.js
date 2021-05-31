@@ -5,5 +5,6 @@ export default function () {
 		{ name: 'Wednesday', subjects: [] },
 		{ name: 'Thursday', subjects: [] },
 		{ name: 'Friday', subjects: [] },
+		{ name: 'Saturday', subjects: [] },
 	];
 }

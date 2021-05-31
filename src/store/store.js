@@ -1,12 +1,12 @@
-import Vue from 'vue';
 import Vuex from 'vuex';
 import VuexPersistence from 'vuex-persist';
 import createCleanWeek from '../weekManipulation/createCleanWeek';
 import mergeWeeks from '../weekManipulation/mergeWeeks';
-import parseIcs from '../weekManipulation/parseICS';
-import sanitizeWeek from '../weekManipulation/sanitizeWeek';
-import settingsMutations from './settingsMutations';
-import weekMutations from './weekMutations';
+import settingsMutations from './mutations/settingsMutations';
+import weekMutations from './mutations/weekMutations';
+import watchActions from './watchActions';
+import settingsActions from './actions/settingsActions';
+import weekActions from './actions/weekActions';
 
 const storeData = {
 	state: {
@@ -21,6 +21,9 @@ const storeData = {
 			centuria: 'A19a',
 			semester: 4,
 			syncSchedule: false,
+			loggedIn: false,
+			avatarURL: null,
+			showSaturday: false,
 		},
 	},
 	mutations: {
@@ -28,48 +31,31 @@ const storeData = {
 		...weekMutations,
 	},
 	actions: {
-		importWeek(store, week) {
-			const sanitizedWeek = sanitizeWeek(week);
-			store.commit('SET_USER_WEEK', sanitizedWeek);
-		},
-
-		async syncSchedule(store) {
-			const { centuria, semester } = store.state.settings;
-			try {
-				const res = await fetch(
-					`https://schedule-cleaner.herokuapp.com/cleaned-schedule/${centuria}_${semester}.ics`
-				);
-				if (!res.ok) throw 'URL not available';
-				const buffer = await res.arrayBuffer();
-				const text = new TextDecoder('iso-8859-1').decode(buffer);
-				const week = parseIcs(text);
-				const sanitizedWeek = sanitizeWeek(week);
-				if (sanitizedWeek === null) throw 'Week not clean';
-				store.commit('SET_SCHEDULE_WEEK', sanitizedWeek);
-				Vue.notify({
-					group: 'main',
-					title: `Synced schedule ${centuria}-${semester}`,
-					duration: 3000,
-					type: 'success',
-				});
-			} catch {
-				Vue.notify({
-					group: 'main',
-					title: `Failed to sync schedule ${centuria}-${semester}`,
-					duration: 5000,
-					type: 'error',
-				});
-			}
-		},
+		...settingsActions,
+		...weekActions,
 	},
 	getters: {
 		weekForExport(state) {
 			return state.userWeek;
 		},
 		week(state) {
-			if (!state.settings.syncSchedule) return state.userWeek;
-			const { userWeek, scheduleWeek } = state;
-			return mergeWeeks(userWeek, scheduleWeek);
+			let week = [...state.userWeek];
+			if (state.settings.syncSchedule) {
+				const { userWeek, scheduleWeek } = state;
+				week = mergeWeeks(userWeek, scheduleWeek);
+			}
+
+			if (!state.settings.showSaturday) {
+				for (const dayIdx in week) {
+					if (
+						week[dayIdx].name === 'Saturday' ||
+						week[dayIdx].name === 'Samstag'
+					) {
+						week.splice(dayIdx, 1);
+					}
+				}
+			}
+			return week;
 		},
 	},
 };
@@ -85,22 +71,14 @@ function inializeStore() {
 		},
 	});
 	const store = new Vuex.Store({ ...storeData, plugins: [vuexLocal.plugin] });
-	store.watch(
-		(state) => state.settings.darkTheme,
-		(darkTheme) => {
-			if (darkTheme) document.body.classList.add('dark');
-			else document.body.classList.remove('dark');
-		},
-		{ immediate: true }
-	);
-
-	store.watch(
-		(state) => state.settings.syncSchedule,
-		(syncSchedule) => {
-			if (syncSchedule) store.dispatch('syncSchedule');
-		},
-		{ immediate: true }
-	);
+	for (const watchAction of watchActions) {
+		store.watch(
+			watchAction.target,
+			(data) => watchAction.action(store, data),
+			watchAction.options
+		);
+	}
+	store.dispatch('checkLogin');
 	return store;
 }
 

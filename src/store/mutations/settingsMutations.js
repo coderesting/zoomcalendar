@@ -2,6 +2,9 @@ export default {
 	SET_DARK_THEME(state, darkTheme) {
 		state.settings.darkTheme = darkTheme;
 	},
+	SET_SHOW_SATURDAY(state, showSaturday) {
+		state.settings.showSaturday = showSaturday;
+	},
 	SET_SETTINGS_OPEN(state, open) {
 		state.settings.open = open;
 	},
@@ -19,5 +22,11 @@ export default {
 	},
 	SET_SEMESTER(state, semester) {
 		state.settings.semester = semester;
+	},
+	SET_LOGIN_STATE(state, loggedIn) {
+		state.settings.loggedIn = loggedIn;
+	},
+	SET_AVATAR_URL(state, avatarURL) {
+		state.settings.avatarURL = avatarURL;
 	},
 };

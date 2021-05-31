@@ -13,8 +13,8 @@
 
 <script>
 import Week from './Week.vue';
-import Settings from './Settings.vue';
-import TransferState from './transferState.vue';
+import Settings from './settings/Settings.vue';
+import TransferState from './TransferState.vue';
 
 export default {
 	name: 'Calendar',

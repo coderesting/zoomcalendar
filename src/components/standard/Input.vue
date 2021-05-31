@@ -36,6 +36,10 @@ input {
 	transition: 0.2s ease;
 }
 
+input[type='file'] {
+	cursor: pointer;
+}
+
 input.onColor {
 	border-color: var(--text-on-color);
 	color: var(--text-on-color);

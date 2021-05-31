@@ -78,11 +78,7 @@ export default {
 	box-sizing: border-box;
 	padding: 15px;
 	border-radius: 10px;
-	background: linear-gradient(
-		20deg,
-		var(--gradient-from) 30%,
-		var(--gradient-to) 100%
-	);
+	background: var(--app-color);
 	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 	place-self: stretch;
 }

@@ -1,5 +1,5 @@
 import parseTime from './parseTime';
-import validate from '../store/validate';
+import validate from '../utils/validate';
 const Validator = require('jsonschema').Validator;
 
 Validator.prototype.customFormats.link = function (link) {
@@ -68,10 +68,16 @@ function autoFixWeek(week) {
 
 export default function (week) {
 	const validationRes = validator.validate(week, schema);
-	console.log(validationRes);
 	if (!validationRes.valid) {
+		console.log(validationRes.errors);
 		return null;
 	}
 	autoFixWeek(week);
 	return week;
+}
+
+export function emptyWeek(week) {
+	for (const day of week)
+		for (const subject of day.subjects) if (subject) return false;
+	return true;
 }
