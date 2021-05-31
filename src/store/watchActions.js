@@ -17,9 +17,9 @@ export default [
 		options: { immediate: true },
 	},
 	{
-		target: (state) => [state.userWeek, state.settings.loggedIn],
-		action: (store, [week, loggedIn]) => {
-			if (loggedIn) {
+		target: (state) => state.userWeek,
+		action: (store, week) => {
+			if (store.state.settings.loggedIn) {
 				store.dispatch('uploadWeek', week);
 			}
 		},

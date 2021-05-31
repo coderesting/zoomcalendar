@@ -69,8 +69,15 @@ function autoFixWeek(week) {
 export default function (week) {
 	const validationRes = validator.validate(week, schema);
 	if (!validationRes.valid) {
+		console.log(validationRes.errors);
 		return null;
 	}
 	autoFixWeek(week);
 	return week;
+}
+
+export function emptyWeek(week) {
+	for (const day of week)
+		for (const subject of day.subjects) if (subject) return false;
+	return true;
 }

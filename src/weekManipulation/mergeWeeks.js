@@ -29,6 +29,7 @@ function insertSubject(week, dayIdx, subject) {
 }
 
 export default function (userWeek, scheduleWeek) {
+	// TODO clean this shit up
 	const userSubjects = userWeek.flatMap((day, dayIdx) => {
 		return day.subjects.map((subject) => {
 			return { ...subject, dayIdx, used: false };
@@ -38,7 +39,7 @@ export default function (userWeek, scheduleWeek) {
 
 	scheduleWeek = scheduleWeek.map((day, dayIdx) => {
 		return {
-			name: userWeek[dayIdx].name,
+			name: (userWeek[dayIdx] || scheduleWeek[dayIdx]).name,
 			subjects: day.subjects.map((subject) => {
 				const idx = userSubjectNames.indexOf(subject.name);
 				const userSubjectData = {};

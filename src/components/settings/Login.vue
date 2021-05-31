@@ -37,11 +37,7 @@ export default {
 	components: { Button, InfoIcon },
 	methods: {
 		login(provider) {
-			const url = new URL(
-				`https://zoom.icetoast.cloud/api/auth/${provider}`
-			);
-			url.searchParams.append('redirectUrl', location.href);
-			window.location.href = url.href;
+			window.location.href = `https://zoom.icetoast.cloud/api/auth/${provider}`;
 		},
 		logout() {
 			this.$store.commit('SET_LOGIN_STATE', false);
