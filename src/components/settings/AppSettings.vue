@@ -183,14 +183,10 @@ export default {
 <style scoped>
 #appSettings {
 	display: grid;
-	grid-template-columns: auto auto;
+	grid-template-columns: 10fr auto;
 	gap: 10px;
 	align-items: center;
 }
-
-/* #appSettings > input[type='text'] {
-	padding: 7px;
-} */
 
 #appSettings > div {
 	display: flex;

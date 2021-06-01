@@ -6,7 +6,9 @@
 			:value="$store.state.settings.open"
 			name="Settings"
 			help-link="https://github.com/coderesting/zoomcalendar#zoom-calendar"
-			class="settingsPopup"
+			:styles="{
+				width: '500px',
+			}"
 			@input="(open) => $store.commit('SET_SETTINGS_OPEN', open)"
 		>
 			<div class="tabs">
@@ -52,6 +54,11 @@ export default {
 </script>
 
 <style scoped>
+#settings .settingsPopup {
+	width: 95%;
+	height: 95%;
+}
+
 #settings .tabs {
 	width: 100%;
 	display: grid;

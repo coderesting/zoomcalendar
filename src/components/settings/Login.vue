@@ -1,9 +1,5 @@
 <template>
 	<div id="login">
-		<div v-if="$store.state.settings.loggedIn" class="user">
-			<img :src="$store.state.settings.avatarURL" />
-			<Button @click="() => logout()">Logout</Button>
-		</div>
 		<div v-if="!$store.state.settings.loggedIn" class="options">
 			<img src="assets/login/google.svg" @click="() => login('google')" />
 			<img
@@ -25,24 +21,23 @@
 					this</span
 				>
 			</div>
+			<div>
+				<InfoIcon class="infoIcon" /><span
+					>Export your schedule before you login to be save</span
+				>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import Button from '../standard/Button';
 import InfoIcon from 'vue-material-design-icons/InformationOutline';
 export default {
 	name: 'Login',
-	components: { Button, InfoIcon },
+	components: { InfoIcon },
 	methods: {
-		login(provider) {
+		login: function (provider) {
 			window.location.href = `https://zoom.icetoast.cloud/api/auth/${provider}`;
-		},
-		logout() {
-			this.$store.commit('SET_LOGIN_STATE', false);
-			this.$store.commit('SET_AVATAR_URL', null);
-			window.location.href = `https://zoom.icetoast.cloud/api/user/logout`;
 		},
 	},
 };
@@ -55,17 +50,6 @@ export default {
 	justify-content: space-around;
 	align-items: center;
 	margin-bottom: 20px;
-}
-
-#login > .user {
-	display: flex;
-	justify-content: space-between;
-	margin-bottom: 10px;
-}
-
-#login > .user > img {
-	border-radius: 100%;
-	cursor: auto;
 }
 
 img {

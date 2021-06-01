@@ -92,7 +92,7 @@ export default {
 .display > h2 {
 	margin: 0px;
 	margin-bottom: 7px;
-	font-size: 19px;
+	font-size: 18px;
 	text-align: center;
 	color: var(--text-on-color);
 }

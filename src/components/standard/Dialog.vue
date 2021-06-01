@@ -1,7 +1,7 @@
 <template>
 	<div class="dialog" :class="{ open: value }">
 		<div class="background" @click="$emit('input', false)"></div>
-		<div class="popup">
+		<div class="popup" :style="styles">
 			<div class="header">
 				<CloseIcon
 					class="closeIcon"
@@ -38,6 +38,7 @@ export default {
 		value: { type: Boolean, required: true },
 		helpLink: { type: String, default: '' },
 		name: { type: String, required: true },
+		styles: { type: Object, default: () => {} },
 	},
 };
 </script>
@@ -100,8 +101,10 @@ h2 {
 	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 	transition: 0.4s ease;
 	transform: scale(1.2);
-	min-width: 300px;
-	max-width: 500px;
+	box-sizing: border-box;
+	overflow: auto;
+	max-width: 95%;
+	max-height: 95%;
 }
 
 .dialog.open > .popup {
