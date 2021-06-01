@@ -2,7 +2,17 @@
 	<div id="syncSettings">
 		<Login />
 
-		<div class="importExport">
+		<div class="actions">
+			<img
+				v-if="$store.state.settings.loggedIn"
+				:src="$store.state.settings.avatarURL"
+			/>
+			<Button
+				v-if="$store.state.settings.loggedIn"
+				@click="() => logout()"
+				>Logout</Button
+			>
+
 			<Input
 				type="file"
 				accept=".json"
@@ -104,12 +114,24 @@ export default {
 				type: type,
 			});
 		},
+		logout: function () {
+			this.$store.commit('SET_LOGIN_STATE', false);
+			this.$store.commit('SET_AVATAR_URL', null);
+			window.location.href = `https://zoom.icetoast.cloud/api/user/logout`;
+		},
 	},
 };
 </script>
 
 <style scoped>
-#syncSettings > .importExport {
+#syncSettings > .actions img {
+	border-radius: 100%;
+	cursor: auto;
+	width: 40px;
+	height: 40px;
+}
+
+#syncSettings > .actions {
 	display: grid;
 	grid-template-columns: auto auto;
 	gap: 10px;

@@ -103,20 +103,23 @@ export default {
 
 <style scoped>
 #week {
-	display: flex;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
 	gap: 20px;
 	padding: 0px 20px;
 	width: 100%;
+	max-width: 2000px;
 	box-sizing: border-box;
 	overflow: auto;
 	height: 100vh;
+	flex-wrap: wrap;
 }
 
 #week > .day {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
+
 	gap: 20px;
 }
 

@@ -31,7 +31,7 @@ input {
 	font-family: Arial;
 	font-size: inherit;
 	width: 100%;
-	min-width: 100px;
+	min-width: 52px;
 	box-sizing: border-box;
 	transition: 0.2s ease;
 }
