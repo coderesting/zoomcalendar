@@ -7,7 +7,7 @@ This is a calendar for students with online lectures in Zoom. You can quickly co
 ## Usage
 
 Just visit https://nak.coderesting.dev/zoomcalendar/
-[![Screenshot of the calendar](meta/overview.gif)](https://nak.coderesting.dev/zoomcalendar/)
+[![Screenshot of the calendar](meta/usage.gif)](https://nak.coderesting.dev/zoomcalendar/)
 
 ### Edit subjects
 
@@ -28,12 +28,18 @@ After a subject is saved, it goes into display mode. From here you can
 ### Settings
 
 <!-- prettier-ignore -->
-| Setting                | Explanation|
+| App setting            | Explanation|
 | ---------------------- | ---------------------- |
-| Import/Export        | Share your schedule with your fellow students from here |
 | Close join tab after | The browser will open a new tab when you join a meeting. This option will close this tab for you after x seconds. When this number is too low you might not join the meeting.|
-| Dark Theme           | Self explanatory |
-| Sync Schedule        | This option sorts your subjects according to your real schedule. It is very important that you name your subjects exactly like the ones in your real schedule. Note: the first letter of the centuria has to be capitalized |
+| Dark theme           | Self explanatory |
+| Show satuday           | Self explanatory |
+| Sort schedule        | This option sorts your subjects according to your real schedule. It is very important that you name your subjects exactly like the ones in your real schedule. |
+
+<!-- prettier-ignore -->
+| Sync setting            | Explanation|
+| ---------------------- | ---------------------- |
+| Account       | Sync your schedule with all your devices |
+| Import/Export        | Share your schedule with your fellow students or create backups |
 
 ## Contribute
 
