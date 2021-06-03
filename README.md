@@ -7,7 +7,7 @@ This is a calendar for students with online lectures in Zoom. You can quickly co
 ## Usage
 
 Just visit https://nak.coderesting.dev/zoomcalendar/
-[![Screenshot of the calendar](meta/usage.gif)](https://nak.coderesting.dev/zoomcalendar/)
+[<img src="meta/usage.gif" width="1000">](https://nak.coderesting.dev/zoomcalendar/)
 
 ### Edit subjects
 
