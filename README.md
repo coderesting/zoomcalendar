@@ -32,7 +32,7 @@ After a subject is saved, it goes into display mode. From here you can
 | ---------------------- | ---------------------- |
 | Close join tab after | The browser will open a new tab when you join a meeting. This option will close this tab for you after x seconds. When this number is too low you might not join the meeting.|
 | Dark theme           | Self explanatory |
-| Show satuday           | Self explanatory |
+| Show saturday           | Self explanatory |
 | Sort schedule        | This option sorts your subjects according to your real schedule. It is very important that you name your subjects exactly like the ones in your real schedule. |
 
 <!-- prettier-ignore -->
